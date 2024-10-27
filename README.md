@@ -4,6 +4,13 @@ This swift package is an SDK for the Ctrl Hub API.
 
 ## Installation
 
+Add the package with your package manager using `https://github.com/ctrl-hub/sdk.swift`
+
+Then import the package into your bundle:
+
+```swift
+import CtrlHubAPI
+```
 
 ## Getting Started
 
@@ -34,7 +41,3 @@ if let configuration = CtrlHubAPI.Config() {
     // there are errors in the config file
 }
 ```
-
-## Authenticating
-
-
