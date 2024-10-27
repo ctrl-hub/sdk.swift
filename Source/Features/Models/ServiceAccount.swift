@@ -8,7 +8,7 @@
 import Foundation
 
 
-@ResourceWrapper(type: "service-accounts")
+//@ResourceWrapper(type: "service-accounts")
 public struct ServiceAccount: Sendable, Equatable {
     var id: String
 }
