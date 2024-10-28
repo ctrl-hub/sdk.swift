@@ -13,6 +13,7 @@ enum ServiceAccountRoutes {
     case all(String)
     case one(String, String)
     case logs(String, String)
+    case log(String, String, String)
     case keys(String, String)
 
     var baseURL: URL {
@@ -21,14 +22,16 @@ enum ServiceAccountRoutes {
     
     var path: String {
         switch self {
-        case .all(let org):
-            return "/v3/orgs/\(org)/admin/iam/service-accounts"
-        case .one(let org, let id):
-            return "/v3/orgs/\(org)/admin/iam/service-accounts/\(id)"
-        case .logs(let org, let id):
-            return "/v3/orgs/\(org)/admin/iam/service-accounts/\(id)/logs"
-        case .keys(let org, let id):
-            return "/v3/orgs/\(org)/admin/iam/service-accounts/\(id)/keys"
+        case .all(let orgId):
+            return "/v3/orgs/\(orgId)/admin/iam/service-accounts"
+        case .one(let orgId, let serviceAccountId):
+            return "/v3/orgs/\(orgId)/admin/iam/service-accounts/\(serviceAccountId)"
+        case .logs(let orgId, let serviceAccountId):
+            return "/v3/orgs/\(orgId)/admin/iam/service-accounts/\(serviceAccountId)/logs"
+        case .log(let orgId, let serviceAccountId, let logId):
+            return "/v3/orgs/\(orgId)/admin/iam/service-accounts/\(serviceAccountId)/logs/\(logId)"
+        case .keys(let orgId, let serviceAccountId):
+            return "/v3/orgs/\(orgId)/admin/iam/service-accounts/\(serviceAccountId)/keys"
         }
     }
     
@@ -39,6 +42,8 @@ enum ServiceAccountRoutes {
         case .one:
             return .get
         case .logs:
+            return .get
+        case .log:
             return .get
         case .keys:
             return .get
@@ -57,42 +62,78 @@ extension ServiceAccountRoutes: URLRequestConvertible {
 @available(iOS 13.0.0, *)
 public class ServiceAccounts {
 
-    static public func get(org: String, complete: @escaping @Sendable (ServiceAccountAPIResponse) -> ()) -> Request {
-        return APISession.default.request(ServiceAccountRoutes.all(org))
+    static public func get(orgId: String, complete: @escaping @Sendable (ServiceAccountManyResponse) -> ()) -> Request {
+        return APISession.default.request(ServiceAccountRoutes.all(orgId))
             .validate()
             .response(responseSerializer: JSONAPISerializer()) { response in
                 switch response.result {
                 case .success:
-                    complete(
-                        .Success(
-                            ServiceAccountAPIResponseData(
-                                serviceAccounts: response.value!
-                            )
-                        )
-                    )
+                    complete(.Success(
+                        response.value!
+                    ))
                 case let .failure(error):
-                    complete(
-                        .Fail(
-                            APIError(
-                                code: response.response?.statusCode ?? 0,
-                                message: error.failureReason ?? "Unknown error"
-                            )
-                        )
-                    )
+                    complete(.Fail(APIError(
+                        code: response.response?.statusCode ?? 0,
+                        message: error.failureReason ?? "Unknown error"
+                    )))
                 }
             }
     }
-    
-    static public func get(org: String, id: String) async {
-        let route = ServiceAccountRoutes.one(org, id)
-        Log.info(route.baseURL.absoluteString + route.path)
+
+    static public func get(orgId: String, serviceAccountId: String, complete: @escaping @Sendable (ServiceAccountOneResponse) -> ()) -> Request {
+        return APISession.default.request(ServiceAccountRoutes.one(orgId, serviceAccountId))
+            .validate()
+            .response(responseSerializer: JSONAPIOneSerializer()) { response in
+                switch response.result {
+                case .success:
+                    complete(.Success(
+                        response.value!
+                    ))
+                case let .failure(error):
+                    complete(.Fail(APIError(
+                        code: response.response?.statusCode ?? 0,
+                        message: error.failureReason ?? "Unknown error"
+                    )))
+                }
+            }
     }
-    
-    static public func logs(org: String, id: String) {
-        let route = ServiceAccountRoutes.logs(org, id)
-        Log.info(route.baseURL.absoluteString + route.path)
+
+    static public func logs(orgId: String, serviceAccountId: String, complete: @escaping @Sendable (RequestLogsManyResponse) -> ()) -> Request {
+        return APISession.default.request(ServiceAccountRoutes.logs(orgId, serviceAccountId))
+            .validate()
+            .response(responseSerializer: RequestLogsSerializer()) { response in
+                switch response.result {
+                case .success:
+                    complete(.Success(
+                        response.value!
+                    ))
+                case let .failure(error):
+                    complete(.Fail(APIError(
+                        code: response.response?.statusCode ?? 0,
+                        message: error.failureReason ?? "Unknown error"
+                    )))
+                }
+            }
     }
-    
+
+    static public func log(orgId: String, serviceAccountId: String, logId: String, complete: @escaping @Sendable (RequestLogsOneResponse) -> ()) -> Request {
+        return APISession.default.request(ServiceAccountRoutes.log(orgId, serviceAccountId, logId))
+            .validate()
+            .response(responseSerializer: RequestLogSerializer()) { response in
+                switch response.result {
+                case .success:
+                    complete(.Success(
+                        response.value!
+                    ))
+                case let .failure(error):
+                    complete(.Fail(APIError(
+                        code: response.response?.statusCode ?? 0,
+                        message: error.failureReason ?? "Unknown error"
+                    )))
+                }
+            }
+    }
+
     static public func keys(org: String, id: String) {
         let route = ServiceAccountRoutes.keys(org, id)
         Log.info(route.baseURL.absoluteString + route.path)

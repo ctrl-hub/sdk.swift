@@ -18,3 +18,33 @@ final class JSONAPISerializer: ResponseSerializer {
       return try decoder.decode([ServiceAccount].self, from: data!)
   }
 }
+
+final class JSONAPIOneSerializer: ResponseSerializer {
+  func serialize(request: URLRequest?,
+                 response: HTTPURLResponse?,
+                 data: Data?,
+                 error: Error?) throws -> ServiceAccount {
+      let decoder = JSONAPIDecoder()
+      return try decoder.decode(ServiceAccount.self, from: data!)
+  }
+}
+
+final class RequestLogsSerializer: ResponseSerializer {
+  func serialize(request: URLRequest?,
+                 response: HTTPURLResponse?,
+                 data: Data?,
+                 error: Error?) throws -> [RequestLog] {
+      let decoder = JSONAPIDecoder()
+      return try decoder.decode([RequestLog].self, from: data!)
+  }
+}
+
+final class RequestLogSerializer: ResponseSerializer {
+  func serialize(request: URLRequest?,
+                 response: HTTPURLResponse?,
+                 data: Data?,
+                 error: Error?) throws -> RequestLog {
+      let decoder = JSONAPIDecoder()
+      return try decoder.decode(RequestLog.self, from: data!)
+  }
+}
