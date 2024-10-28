@@ -56,7 +56,7 @@ extension ServiceAccountRoutes: URLRequestConvertible {
 
 @available(iOS 13.0.0, *)
 public class ServiceAccounts {
-    
+
     static public func get(org: String, complete: @escaping @Sendable (ServiceAccountAPIResponse) -> ()) -> Request {
         return APISession.default.request(ServiceAccountRoutes.all(org))
             .validate()
