@@ -54,32 +54,6 @@ extension ServiceAccountRoutes: URLRequestConvertible {
     }
 }
 
-final class JSONAPISerializer: ResponseSerializer {
-  func serialize(request: URLRequest?,
-                 response: HTTPURLResponse?,
-                 data: Data?,
-                 error: Error?) throws -> [ServiceAccount] {
-      let decoder = JSONAPIDecoder()
-      return try decoder.decode([ServiceAccount].self, from: data!)
-  }
-}
-
-
-public struct APIError {
-    let code: Int
-    let message: String
-}
-
-public struct ServiceAccountAPIResponseData {
-    public let serviceAccounts: [ServiceAccount]
-}
-
-public enum ServiceAccountAPIResponse {
-    case Success(ServiceAccountAPIResponseData)
-    case Fail(APIError)
-}
-
-
 @available(iOS 13.0.0, *)
 public class ServiceAccounts {
     
