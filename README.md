@@ -42,11 +42,15 @@ if let configuration = CtrlHubAPI.Config() {
 }
 
 // Make requests to Ctrl Hub via the SDK:
-do {
-    let submissions = try await CtrlHubAPI.Submissions.get()
-    // do something with the submissions
-} catch {
-    print(error)
-    // handle any errors that are thrown
+let _ = CtrlHubAPI.ServiceAccounts.get(org: "50d096a7-d686-4c1a-bdfd-a084f42e8043") { response in
+    switch response {
+    case .Success(let data):
+        debugPrint("service accounts count:", data.serviceAccounts.count)
+        data.serviceAccounts.forEach() { account in
+            print("account:", account) // access each account
+        }
+    case .Fail(let error):
+        print("error:", error)
+    }
 }
 ```

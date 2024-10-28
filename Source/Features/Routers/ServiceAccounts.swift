@@ -7,6 +7,7 @@
 
 import Foundation
 import Alamofire
+import JSONAPI
 
 enum ServiceAccountRoutes {
     case all(String)
@@ -53,25 +54,64 @@ extension ServiceAccountRoutes: URLRequestConvertible {
     }
 }
 
+final class JSONAPISerializer: ResponseSerializer {
+  func serialize(request: URLRequest?,
+                 response: HTTPURLResponse?,
+                 data: Data?,
+                 error: Error?) throws -> [ServiceAccount] {
+      let decoder = JSONAPIDecoder()
+      return try decoder.decode([ServiceAccount].self, from: data!)
+  }
+}
+
+
+public struct APIError {
+    let code: Int
+    let message: String
+}
+
+public struct ServiceAccountAPIResponseData {
+    public let serviceAccounts: [ServiceAccount]
+}
+
+public enum ServiceAccountAPIResponse {
+    case Success(ServiceAccountAPIResponseData)
+    case Fail(APIError)
+}
+
+
 @available(iOS 13.0.0, *)
 public class ServiceAccounts {
     
-    static public func get(org: String) async throws -> [ServiceAccount] {
-        do {
-            APISession.default.request(ServiceAccountRoutes.all(org)).response { response in
-                debugPrint(response)
+    static public func get(org: String, complete: @escaping @Sendable (ServiceAccountAPIResponse) -> ()) -> Request {
+        return APISession.default.request(ServiceAccountRoutes.all(org))
+            .validate()
+            .response(responseSerializer: JSONAPISerializer()) { response in
+                switch response.result {
+                case .success:
+                    complete(
+                        .Success(
+                            ServiceAccountAPIResponseData(
+                                serviceAccounts: response.value!
+                            )
+                        )
+                    )
+                case let .failure(error):
+                    complete(
+                        .Fail(
+                            APIError(
+                                code: response.response?.statusCode ?? 0,
+                                message: error.failureReason ?? "Unknown error"
+                            )
+                        )
+                    )
+                }
             }
-        } catch {
-            throw error
-        }
-//        Log.info(route.baseURL.absoluteString + route.path)
-        return [ServiceAccount(id: "")]
     }
     
-    static public func get(org: String, id: String) async throws -> ServiceAccount {
+    static public func get(org: String, id: String) async {
         let route = ServiceAccountRoutes.one(org, id)
         Log.info(route.baseURL.absoluteString + route.path)
-        return ServiceAccount(id: "")
     }
     
     static public func logs(org: String, id: String) {
