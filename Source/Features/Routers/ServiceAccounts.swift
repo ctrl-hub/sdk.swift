@@ -9,10 +9,10 @@ import Foundation
 import Alamofire
 
 enum ServiceAccountRoutes {
-    case all
-    case one(String)
-    case logs(String)
-    case keys(String)
+    case all(String)
+    case one(String, String)
+    case logs(String, String)
+    case keys(String, String)
 
     var baseURL: URL {
         return URL(string: "https://api.ctrl-hub.dev")!
@@ -20,14 +20,14 @@ enum ServiceAccountRoutes {
     
     var path: String {
         switch self {
-        case .all:
-            return "/v3/admin/iam/service-accounts"
-        case .one(let id):
-            return "/v3/admin/iam/service-accounts/\(id)"
-        case .logs(let id):
-            return "/v3/admin/iam/service-accounts/\(id)/logs"
-        case .keys(let id):
-            return "/v3/admin/iam/service-accounts/\(id)/keys"
+        case .all(let org):
+            return "/v3/orgs/\(org)/admin/iam/service-accounts"
+        case .one(let org, let id):
+            return "/v3/orgs/\(org)/admin/iam/service-accounts/\(id)"
+        case .logs(let org, let id):
+            return "/v3/orgs/\(org)/admin/iam/service-accounts/\(id)/logs"
+        case .keys(let org, let id):
+            return "/v3/orgs/\(org)/admin/iam/service-accounts/\(id)/keys"
         }
     }
     
@@ -56,9 +56,11 @@ extension ServiceAccountRoutes: URLRequestConvertible {
 @available(iOS 13.0.0, *)
 public class ServiceAccounts {
     
-    static public func get() async throws -> [ServiceAccount] {
+    static public func get(org: String) async throws -> [ServiceAccount] {
         do {
-            let sa = AF.request(ServiceAccountRoutes.all)
+            APISession.default.request(ServiceAccountRoutes.all(org)).response { response in
+                debugPrint(response)
+            }
         } catch {
             throw error
         }
@@ -66,19 +68,19 @@ public class ServiceAccounts {
         return [ServiceAccount(id: "")]
     }
     
-    static public func get(id: String) async throws -> ServiceAccount {
-        let route = ServiceAccountRoutes.one(id)
+    static public func get(org: String, id: String) async throws -> ServiceAccount {
+        let route = ServiceAccountRoutes.one(org, id)
         Log.info(route.baseURL.absoluteString + route.path)
         return ServiceAccount(id: "")
     }
     
-    static public func logs(id: String) {
-        let route = ServiceAccountRoutes.logs(id)
+    static public func logs(org: String, id: String) {
+        let route = ServiceAccountRoutes.logs(org, id)
         Log.info(route.baseURL.absoluteString + route.path)
     }
     
-    static public func keys(id: String) {
-        let route = ServiceAccountRoutes.keys(id)
+    static public func keys(org: String, id: String) {
+        let route = ServiceAccountRoutes.keys(org, id)
         Log.info(route.baseURL.absoluteString + route.path)
     }
 

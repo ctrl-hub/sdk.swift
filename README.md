@@ -12,7 +12,7 @@ Then import the package into your bundle:
 import CtrlHubAPI
 ```
 
-## Getting Started
+## Getting Started
 
 The SDK uses a `.plist` configuration file called `CtrlHubAPI.plist` to collect all of the variables required to connect to the platform which you should add to to the root of your own project when integrating the SDK.
 
@@ -34,10 +34,19 @@ To use the SDK, you need to import the package before calling any methods:
 ```swift
 import CtrlHubAPI
 
-// Read the configuration from the CtrlHubAPI.plist in your app bundle
+// Read the configuration from the CtrlHubAPI.plist in your app bundle:
 if let configuration = CtrlHubAPI.Config() {
     CtrlHubAPI.config = configuration
 } else {
     // there are errors in the config file
+}
+
+// Make requests to Ctrl Hub via the SDK:
+do {
+    let submissions = try await CtrlHubAPI.Submissions.get()
+    // do something with the submissions
+} catch {
+    print(error)
+    // handle any errors that are thrown
 }
 ```
