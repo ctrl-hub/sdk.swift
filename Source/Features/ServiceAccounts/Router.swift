@@ -9,12 +9,13 @@ import Foundation
 import Alamofire
 import JSONAPI
 
+// MARK: - Routes
+
 enum ServiceAccountRoutes {
     case all(String)
     case one(String, String)
     case logs(String, String)
     case log(String, String, String)
-    case keys(String, String)
 
     var baseURL: URL {
         // TODO: - this needs to come from Config
@@ -31,8 +32,6 @@ enum ServiceAccountRoutes {
             return "/v3/orgs/\(orgId)/admin/iam/service-accounts/\(serviceAccountId)/logs"
         case .log(let orgId, let serviceAccountId, let logId):
             return "/v3/orgs/\(orgId)/admin/iam/service-accounts/\(serviceAccountId)/logs/\(logId)"
-        case .keys(let orgId, let serviceAccountId):
-            return "/v3/orgs/\(orgId)/admin/iam/service-accounts/\(serviceAccountId)/keys"
         }
     }
     
@@ -46,8 +45,6 @@ enum ServiceAccountRoutes {
             return .get
         case .log:
             return .get
-        case .keys:
-            return .get
         }
     }
 }
@@ -60,9 +57,33 @@ extension ServiceAccountRoutes: URLRequestConvertible {
     }
 }
 
-public class ServiceAccounts {
+// MARK: - Reponse Data
 
-    static public func get(orgId: String, complete: @escaping @Sendable (ServiceAccountManyResponse) -> ()) -> Request {
+public enum ServiceAccountResponseData {
+    case success(ServiceAccount)
+    case fail(RequestError)
+}
+
+public enum ServiceAccountsResponseData {
+    case success([ServiceAccount])
+    case fail(RequestError)
+}
+
+public enum RequestLogResponseData {
+    case success(RequestLog)
+    case fail(RequestError)
+}
+
+public enum RequestLogsResponseData {
+    case success([RequestLog])
+    case fail(RequestError)
+}
+
+// MARK: - Interface
+
+public class ServiceAccounts {
+    
+    static public func get(orgId: String, complete: @escaping @Sendable (ServiceAccountsResponseData) -> ()) -> Request {
         return CtrlHubSession.api.request(ServiceAccountRoutes.all(orgId))
             .validate()
             .response(responseSerializer: ServiceAccountsSerializer()) { response in
@@ -79,8 +100,8 @@ public class ServiceAccounts {
                 }
             }
     }
-
-    static public func get(orgId: String, serviceAccountId: String, complete: @escaping @Sendable (ServiceAccountOneResponse) -> ()) -> Request {
+    
+    static public func get(orgId: String, serviceAccountId: String, complete: @escaping @Sendable (ServiceAccountResponseData) -> ()) -> Request {
         return CtrlHubSession.api.request(ServiceAccountRoutes.one(orgId, serviceAccountId))
             .validate()
             .response(responseSerializer: ServiceAccountSerializer()) { response in
@@ -97,8 +118,8 @@ public class ServiceAccounts {
                 }
             }
     }
-
-    static public func logs(orgId: String, serviceAccountId: String, complete: @escaping @Sendable (RequestLogsManyResponse) -> ()) -> Request {
+    
+    static public func logs(orgId: String, serviceAccountId: String, complete: @escaping @Sendable (RequestLogsResponseData) -> ()) -> Request {
         return CtrlHubSession.api.request(ServiceAccountRoutes.logs(orgId, serviceAccountId))
             .validate()
             .response(responseSerializer: RequestLogsSerializer()) { response in
@@ -115,8 +136,8 @@ public class ServiceAccounts {
                 }
             }
     }
-
-    static public func log(orgId: String, serviceAccountId: String, logId: String, complete: @escaping @Sendable (RequestLogsOneResponse) -> ()) -> Request {
+    
+    static public func log(orgId: String, serviceAccountId: String, logId: String, complete: @escaping @Sendable (RequestLogResponseData) -> ()) -> Request {
         return CtrlHubSession.api.request(ServiceAccountRoutes.log(orgId, serviceAccountId, logId))
             .validate()
             .response(responseSerializer: RequestLogSerializer()) { response in
@@ -132,10 +153,5 @@ public class ServiceAccounts {
                     )))
                 }
             }
-    }
-
-    static public func keys(org: String, id: String) {
-        let route = ServiceAccountRoutes.keys(org, id)
-        Log.info(route.baseURL.absoluteString + route.path)
     }
 }

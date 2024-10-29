@@ -8,28 +8,6 @@
 import Foundation
 import JSONAPI
 
-// MARK: - Reponse Data
-
-public enum ServiceAccountOneResponse {
-    case success(ServiceAccount)
-    case fail(RequestError)
-}
-
-public enum ServiceAccountManyResponse {
-    case success([ServiceAccount])
-    case fail(RequestError)
-}
-
-public enum RequestLogsOneResponse {
-    case success(RequestLog)
-    case fail(RequestError)
-}
-
-public enum RequestLogsManyResponse {
-    case success([RequestLog])
-    case fail(RequestError)
-}
-
 // MARK: - Resources
 
 /// A service account is a principal which can request resources from the API
