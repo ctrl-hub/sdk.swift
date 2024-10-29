@@ -63,7 +63,7 @@ extension ServiceAccountRoutes: URLRequestConvertible {
 public class ServiceAccounts {
 
     static public func get(orgId: String, complete: @escaping @Sendable (ServiceAccountManyResponse) -> ()) -> Request {
-        return APISession.default.request(ServiceAccountRoutes.all(orgId))
+        return CtrlHubSession.api.request(ServiceAccountRoutes.all(orgId))
             .validate()
             .response(responseSerializer: JSONAPISerializer()) { response in
                 switch response.result {
@@ -72,7 +72,7 @@ public class ServiceAccounts {
                         response.value!
                     ))
                 case let .failure(error):
-                    complete(.Fail(APIError(
+                    complete(.Fail(RequestError(
                         code: response.response?.statusCode ?? 0,
                         message: error.failureReason ?? "Unknown error"
                     )))
@@ -81,7 +81,7 @@ public class ServiceAccounts {
     }
 
     static public func get(orgId: String, serviceAccountId: String, complete: @escaping @Sendable (ServiceAccountOneResponse) -> ()) -> Request {
-        return APISession.default.request(ServiceAccountRoutes.one(orgId, serviceAccountId))
+        return CtrlHubSession.api.request(ServiceAccountRoutes.one(orgId, serviceAccountId))
             .validate()
             .response(responseSerializer: JSONAPIOneSerializer()) { response in
                 switch response.result {
@@ -90,7 +90,7 @@ public class ServiceAccounts {
                         response.value!
                     ))
                 case let .failure(error):
-                    complete(.Fail(APIError(
+                    complete(.Fail(RequestError(
                         code: response.response?.statusCode ?? 0,
                         message: error.failureReason ?? "Unknown error"
                     )))
@@ -99,7 +99,7 @@ public class ServiceAccounts {
     }
 
     static public func logs(orgId: String, serviceAccountId: String, complete: @escaping @Sendable (RequestLogsManyResponse) -> ()) -> Request {
-        return APISession.default.request(ServiceAccountRoutes.logs(orgId, serviceAccountId))
+        return CtrlHubSession.api.request(ServiceAccountRoutes.logs(orgId, serviceAccountId))
             .validate()
             .response(responseSerializer: RequestLogsSerializer()) { response in
                 switch response.result {
@@ -108,7 +108,7 @@ public class ServiceAccounts {
                         response.value!
                     ))
                 case let .failure(error):
-                    complete(.Fail(APIError(
+                    complete(.Fail(RequestError(
                         code: response.response?.statusCode ?? 0,
                         message: error.failureReason ?? "Unknown error"
                     )))
@@ -117,7 +117,7 @@ public class ServiceAccounts {
     }
 
     static public func log(orgId: String, serviceAccountId: String, logId: String, complete: @escaping @Sendable (RequestLogsOneResponse) -> ()) -> Request {
-        return APISession.default.request(ServiceAccountRoutes.log(orgId, serviceAccountId, logId))
+        return CtrlHubSession.api.request(ServiceAccountRoutes.log(orgId, serviceAccountId, logId))
             .validate()
             .response(responseSerializer: RequestLogSerializer()) { response in
                 switch response.result {
@@ -126,7 +126,7 @@ public class ServiceAccounts {
                         response.value!
                     ))
                 case let .failure(error):
-                    complete(.Fail(APIError(
+                    complete(.Fail(RequestError(
                         code: response.response?.statusCode ?? 0,
                         message: error.failureReason ?? "Unknown error"
                     )))

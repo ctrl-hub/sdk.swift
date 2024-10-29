@@ -12,22 +12,22 @@ import JSONAPI
 
 public enum ServiceAccountOneResponse {
     case Success(ServiceAccount)
-    case Fail(APIError)
+    case Fail(RequestError)
 }
 
 public enum ServiceAccountManyResponse {
     case Success([ServiceAccount])
-    case Fail(APIError)
+    case Fail(RequestError)
 }
 
 public enum RequestLogsOneResponse {
     case Success(RequestLog)
-    case Fail(APIError)
+    case Fail(RequestError)
 }
 
 public enum RequestLogsManyResponse {
     case Success([RequestLog])
-    case Fail(APIError)
+    case Fail(RequestError)
 }
 
 // MARK: - Resources

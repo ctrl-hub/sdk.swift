@@ -1,5 +1,5 @@
 //
-//  APISession.swift
+//  Session.swift
 //  CtrlHubAPI
 //
 //  Created by Andrew Waters on 28/10/2024.
@@ -7,9 +7,9 @@
 
 import Alamofire
 
-class APISession {
+class CtrlHubSession {
 
-    static let `default` = APISession().session
+    static let api = CtrlHubSession().session
 
     private let session: Session
 
