@@ -65,7 +65,7 @@ public class ServiceAccounts {
     static public func get(orgId: String, complete: @escaping @Sendable (ServiceAccountManyResponse) -> ()) -> Request {
         return CtrlHubSession.api.request(ServiceAccountRoutes.all(orgId))
             .validate()
-            .response(responseSerializer: JSONAPISerializer()) { response in
+            .response(responseSerializer: ServiceAccountsSerializer()) { response in
                 switch response.result {
                 case .success:
                     complete(.success(
@@ -83,7 +83,7 @@ public class ServiceAccounts {
     static public func get(orgId: String, serviceAccountId: String, complete: @escaping @Sendable (ServiceAccountOneResponse) -> ()) -> Request {
         return CtrlHubSession.api.request(ServiceAccountRoutes.one(orgId, serviceAccountId))
             .validate()
-            .response(responseSerializer: JSONAPIOneSerializer()) { response in
+            .response(responseSerializer: ServiceAccountSerializer()) { response in
                 switch response.result {
                 case .success:
                     complete(.success(
