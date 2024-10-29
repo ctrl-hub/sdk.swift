@@ -68,11 +68,11 @@ public class ServiceAccounts {
             .response(responseSerializer: JSONAPISerializer()) { response in
                 switch response.result {
                 case .success:
-                    complete(.Success(
+                    complete(.success(
                         response.value!
                     ))
                 case let .failure(error):
-                    complete(.Fail(RequestError(
+                    complete(.fail(RequestError(
                         code: response.response?.statusCode ?? 0,
                         message: error.failureReason ?? "Unknown error"
                     )))
@@ -86,11 +86,11 @@ public class ServiceAccounts {
             .response(responseSerializer: JSONAPIOneSerializer()) { response in
                 switch response.result {
                 case .success:
-                    complete(.Success(
+                    complete(.success(
                         response.value!
                     ))
                 case let .failure(error):
-                    complete(.Fail(RequestError(
+                    complete(.fail(RequestError(
                         code: response.response?.statusCode ?? 0,
                         message: error.failureReason ?? "Unknown error"
                     )))
@@ -104,11 +104,11 @@ public class ServiceAccounts {
             .response(responseSerializer: RequestLogsSerializer()) { response in
                 switch response.result {
                 case .success:
-                    complete(.Success(
+                    complete(.success(
                         response.value!
                     ))
                 case let .failure(error):
-                    complete(.Fail(RequestError(
+                    complete(.fail(RequestError(
                         code: response.response?.statusCode ?? 0,
                         message: error.failureReason ?? "Unknown error"
                     )))
@@ -122,11 +122,11 @@ public class ServiceAccounts {
             .response(responseSerializer: RequestLogSerializer()) { response in
                 switch response.result {
                 case .success:
-                    complete(.Success(
+                    complete(.success(
                         response.value!
                     ))
                 case let .failure(error):
-                    complete(.Fail(RequestError(
+                    complete(.fail(RequestError(
                         code: response.response?.statusCode ?? 0,
                         message: error.failureReason ?? "Unknown error"
                     )))
