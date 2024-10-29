@@ -14,6 +14,6 @@ class APISession {
     private let session: Session
 
     private init() {
-        session = Session(interceptor: APIRequestInterceptor())
+        session = Session(interceptor: AuthInterceptor())
     }
 }

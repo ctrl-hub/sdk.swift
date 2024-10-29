@@ -1,5 +1,5 @@
 //
-//  APIRequestInterceptor.swift
+//  AuthInterceptor.swift
 //  CtrlHubAPI
 //
 //  Created by Andrew Waters on 28/10/2024.
@@ -8,7 +8,7 @@
 import Foundation
 import Alamofire
 
-final class APIRequestInterceptor: RequestInterceptor, Sendable {
+final class AuthInterceptor: RequestInterceptor, Sendable {
 
     let accessToken: String = ""
 
