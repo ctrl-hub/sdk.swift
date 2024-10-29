@@ -65,9 +65,11 @@ public struct ServiceAccountKey: Sendable, Equatable {
     @ResourceAttribute() public var enabled: Bool
 }
 
-/// A request log is a record of a request and response sent to the
-/// API. It contains the original request, the response and some
-/// additional data about the request
+/**
+ A request log is a record of a request and response sent to the API.
+ 
+ It contains the original request, the response and some additional data about the request.
+ */
 @ResourceWrapper(type: "logs")
 public struct RequestLog: Sendable, Equatable {
 
@@ -76,9 +78,56 @@ public struct RequestLog: Sendable, Equatable {
 
     /// The duration of time (in ms) that the request took to process
     @ResourceAttribute() public var duration: Int
+    /// The actor who made the request
+    @ResourceAttribute() public var actor: Actor
+    /// The request that was received and processed by the API
+    @ResourceAttribute() public var request: RequestLogRequest
+    /// The response that was sent to the caller
+    @ResourceAttribute() public var response: RequestLogResponse
+}
 
-    public struct actor {
-        @ResourceAttribute() public var id: String
-        @ResourceAttribute() public var type: String
-    }
+/**
+ The actor who made the request
+ */
+public struct Actor: Codable, Equatable, Sendable {
+    /// The Principals ID
+    public var id: String
+    /// The type of Principal (e.g. "service-accounts" | "users")
+    public var type: String
+}
+
+/**
+ The request that was received and processed by the API
+ */
+public struct RequestLogRequest: Codable, Equatable, Sendable {
+    /// The content length of the request (in bytes)
+    public var content_length: Int
+    /// The request method
+    public var method: String
+    /// The path the request was made to (if you need the host, this is usually in the `X-Forwarded-Host` header)
+    public var path: String
+    /// The query params that were sent woth the request
+    public var query: [String: [String]]
+    /// A string ltieral of the query params
+    public var raw_query: String
+    /// The time the request was received by the API
+    public var time: String
+    /// A string representation of the body
+    public var body: String
+    /// The headers that were sent with the request (and others appended by the API ingress)
+    public var headers: [String: [String]]
+}
+
+/**
+ The response that was sent to the caller
+*/
+public struct RequestLogResponse: Codable, Equatable, Sendable {
+    /// The time the response was sent
+    public var time: String
+    /// The status code sent
+    public var status: Int
+    /// A string representation of the body included in the response
+    public var body: String
+    /// The headers that were returned to the caller
+    public var headers: [String: [String]]
 }
