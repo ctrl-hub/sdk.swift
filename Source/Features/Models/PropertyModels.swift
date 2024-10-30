@@ -30,7 +30,7 @@ public struct Property: Sendable, Equatable {
     @ResourceAttribute() public var psr: PSR
     
     /// The long / lat location of the property
-    @ResourceAttribute() public var location: Location
+    @ResourceAttribute() public var location: PointLocation
 }
 
 /// PSR (Priority Services Register) attributes for the property
@@ -47,15 +47,4 @@ public struct PSR: Codable, Equatable, Sendable {
 
     /// Notes about the occupant, which might include the needs of the vulnerable customer, or alternative contact information
     public var notes: String
-}
-
-public struct Location: Codable, Equatable, Sendable {
-
-    /// The geospatial coordinates of the property which will be an array of exactly two floats
-    /// The first value is the longitude
-    /// The second value is the latitude
-    public var coordinates: [Double]
-
-    /// The type of geosptial data, which for a property will be a `Point`
-    public var type: String
 }
