@@ -21,5 +21,6 @@ public struct Street: Sendable, Equatable {
     @ResourceAttribute() public var usrn: Int64
 
     /// The location of the street
+    // TODO: - this isn't working because the MLS might be [[null]] or [[]] or [[Double]]
 //    @ResourceAttribute() public var location: MultiLineString
 }
