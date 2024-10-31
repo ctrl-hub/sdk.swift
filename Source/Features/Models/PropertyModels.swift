@@ -7,6 +7,7 @@
 
 import Foundation
 import JSONAPI
+import MapKit
 
 // MARK: - Resources
 
@@ -31,6 +32,13 @@ public struct Property: Sendable, Equatable {
     
     /// The long / lat location of the property
     @ResourceAttribute() public var location: PointLocation
+
+    public func coords() -> CLLocationCoordinate2D {
+        CLLocationCoordinate2D(
+            latitude: self.location.coordinates[1],
+            longitude: self.location.coordinates[0]
+        )
+    }
 }
 
 /// PSR (Priority Services Register) attributes for the property
