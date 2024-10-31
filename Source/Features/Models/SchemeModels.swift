@@ -12,7 +12,7 @@ import JSONAPI
 
 /// A scheme of work
 @ResourceWrapper(type: "schemes")
-public struct Scheme: Sendable, Equatable {
+public struct Scheme: Sendable, Equatable, Identifiable {
     
     /// The scheme ID
     public var id: String
@@ -38,5 +38,5 @@ public struct Scheme: Sendable, Equatable {
     /// Labels which are present
     @ResourceAttribute() public var labels: [Label]
 
-    @ResourceRelationship var work_orders: [WorkOrder]
+    @ResourceRelationship public var work_orders: [WorkOrder]
 }

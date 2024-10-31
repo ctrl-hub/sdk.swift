@@ -30,5 +30,5 @@ public struct WorkOrder: Sendable, Equatable {
 
     @ResourceAttribute() public var labels: [Label]
 
-    @ResourceRelationship var operations: [Operation]
+    @ResourceRelationship public var operations: [Operation]
 }
