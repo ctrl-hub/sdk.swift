@@ -18,7 +18,6 @@ public struct PointLocation: Codable, Equatable, Sendable {
     public var type: String
 }
 
-
 public struct MultiLineString: Codable, Equatable, Sendable {
 
     /// The geospatial coordinates of the property which will be an array of an array of floats
