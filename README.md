@@ -1,5 +1,8 @@
 # CtrlHub
 
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fctrl-hub%2Fsdk.swift%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/DataDog/swift-jsonapi)
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fctrl-hub%2Fsdk.swift%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/DataDog/swift-jsonapi)
+
 This swift package is an SDK for the [Ctrl Hub API](https://docs.ctrl-hub.com/api-reference).
 
 
