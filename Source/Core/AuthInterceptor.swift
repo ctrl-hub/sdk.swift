@@ -14,7 +14,8 @@ import Alamofire
  */
 final class AuthInterceptor: RequestInterceptor, Sendable {
 
-    let accessToken: String = "ory_st_rxgLBQBjR4ysqelMtGHBR6KqLfrHAmbd"
+    // TODO: - get this from AuthManager
+    let accessToken: String = ""
 
     /**
      Adapts the url request with the X-Session-Token header to authenticate the user at the API
