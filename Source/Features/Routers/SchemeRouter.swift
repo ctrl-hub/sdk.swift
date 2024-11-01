@@ -1,9 +1,8 @@
+// Unless explicitly stated otherwise all files in this repository are licensed under
+// the MIT License.
 //
-//  SchemeRouter.swift
-//  CtrlHub
-//
-//  Created by Andrew Waters on 31/10/2024.
-//
+// This product includes software developed at Ctrl Hub (https://www.ctrl-hub.com).
+// Copyright 2024-Present Ctrl Hub Limited.
 
 import Foundation
 import Alamofire
