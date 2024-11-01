@@ -38,7 +38,7 @@ public class Config {
     // MARK: - Lifecycle
     
     public convenience init?(logsEnabled: Bool, logLevel: LogLevel = .debug) {
-        guard let path = Bundle.main.path(forResource: "CtrlHubAPIConfig", ofType: "plist"),
+        guard let path = Bundle.main.path(forResource: "CtrlHubConfig", ofType: "plist"),
               let config = NSDictionary(contentsOfFile: path) else {
             return nil
         }

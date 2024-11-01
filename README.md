@@ -1,4 +1,4 @@
-# CtrlHubAPI
+# CtrlHub
 
 This swift package is an SDK for the [Ctrl Hub API](https://docs.ctrl-hub.com/api-reference).
 
@@ -10,13 +10,13 @@ Add the package with your package manager using `https://github.com/ctrl-hub/sdk
 Then import the package into your bundle:
 
 ```swift
-import CtrlHubAPI
+import CtrlHub
 ```
 
 
 ## Getting Started
 
-The SDK uses a `.plist` configuration file called `CtrlHubAPI.plist` to collect all of the variables required to connect to the platform which you should add to to the root of your own project when integrating the SDK.
+The SDK uses a `.plist` configuration file called `CtrlHubConfig.plist` to collect all of the variables required to connect to the platform which you should add to to the root of your own project when integrating the SDK.
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
