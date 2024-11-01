@@ -12,7 +12,7 @@ import JSONAPI
 
 /// An IAM role
 @ResourceWrapper(type: "roles")
-public struct Role: Sendable, Equatable {
+public struct Role: Sendable, Equatable, Identifiable {
     
     /// The role ID
     public var id: String
@@ -27,7 +27,7 @@ public struct Role: Sendable, Equatable {
     @ResourceAttribute() public var custom: Bool
     
     /// The role launch stage
-    @ResourceAttribute() public var launch_stage: String
+    @ResourceAttribute(key: "launch_stage") public var launchStage: String
     
     /// The role permissions
     @ResourceAttribute() public var permissions: [String]

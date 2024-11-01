@@ -13,7 +13,7 @@ import MapKit
 
 /// A physical property which can be referenced uniquely
 @ResourceWrapper(type: "properties")
-public struct Property: Sendable, Equatable {
+public struct Property: Sendable, Equatable, Identifiable {
     
     /// The ID of the property
     public var id: String

@@ -12,7 +12,7 @@ import JSONAPI
 
 /// A physical street which can be referenced uniquely
 @ResourceWrapper(type: "streets")
-public struct Street: Sendable, Equatable {
+public struct Street: Sendable, Equatable, Identifiable {
     
     /// The ID of the street
     public var id: String

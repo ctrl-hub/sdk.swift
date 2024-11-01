@@ -12,7 +12,7 @@ import JSONAPI
 
 /// An IAM role
 @ResourceWrapper(type: "permissions")
-public struct Permission: Sendable, Equatable {
+public struct Permission: Sendable, Equatable, Identifiable {
     
     /// The ID of the role
     public var id: String

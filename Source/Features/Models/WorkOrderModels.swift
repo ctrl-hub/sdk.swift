@@ -11,10 +11,10 @@ import JSONAPI
 // MARK: - Resources
 
 @ResourceWrapper(type: "work-orders")
-public struct WorkOrder: Sendable, Equatable {
+public struct WorkOrder: Sendable, Equatable, Identifiable {
     public var id: String
 
-    @ResourceAttribute() public var name: String?
+    @ResourceAttribute() public var name: String
 
     @ResourceAttribute() public var code: String?
 
@@ -24,9 +24,9 @@ public struct WorkOrder: Sendable, Equatable {
 
     @ResourceAttribute() public var uprns: [Int64]
 
-    @ResourceAttribute() public var start_date: String?
+    @ResourceAttribute(key: "start_date") public var startDate: String?
 
-    @ResourceAttribute() public var end_date: String?
+    @ResourceAttribute(key: "end_date") public var endDate: String?
 
     @ResourceAttribute() public var labels: [Label]
 

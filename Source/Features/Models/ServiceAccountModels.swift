@@ -73,7 +73,7 @@ public struct RequestLog: Sendable, Equatable {
 /**
  The actor who made the request
  */
-public struct Actor: Codable, Equatable, Sendable {
+public struct Actor: Codable, Equatable, Sendable, Identifiable {
 
     /// The Principals ID
     public var id: String

@@ -11,16 +11,16 @@ import JSONAPI
 // MARK: - Resources
 
 @ResourceWrapper(type: "operations")
-public struct Operation: Sendable, Equatable {
+public struct Operation: Sendable, Equatable, Identifiable {
     public var id: String
 
     @ResourceAttribute() public var code: String?
 
     @ResourceAttribute() public var description: String?
 
-    @ResourceAttribute() public var start_date: String?
+    @ResourceAttribute(key: "start_date") public var startDate: String?
     
-    @ResourceAttribute() public var end_date: String?
+    @ResourceAttribute(key: "end_date") public var endDate: String?
 
     @ResourceAttribute() public var aborted: Bool
 

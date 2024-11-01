@@ -12,7 +12,7 @@ import JSONAPI
 
 /// A service account is a principal which can request resources from the API
 @ResourceWrapper(type: "organisations")
-public struct Organisation: Sendable, Equatable {
+public struct Organisation: Sendable, Equatable, Identifiable {
 
     /// The ID of the organisation
     public var id: String

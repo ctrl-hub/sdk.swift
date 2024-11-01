@@ -30,13 +30,13 @@ public struct Scheme: Sendable, Equatable, Identifiable {
     @ResourceAttribute() public var status: String?
 
     /// The projected start date of the scheme
-    @ResourceAttribute() public var start_date: String?
+    @ResourceAttribute(key: "start_date") public var startDate: String?
 
     /// The projected end date of the scheme
-    @ResourceAttribute() public var end_date: String?
+    @ResourceAttribute(key: "end_date") public var endDate: String?
 
     /// Labels which are present
     @ResourceAttribute() public var labels: [Label]
 
-    @ResourceRelationship public var work_orders: [WorkOrder]
+    @ResourceRelationship(key: "work_orders") public var workOrders: [WorkOrder]
 }
