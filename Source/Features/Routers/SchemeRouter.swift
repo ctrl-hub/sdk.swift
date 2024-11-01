@@ -63,7 +63,7 @@ public enum SchemesResponseData {
 
 public class Schemes {
     
-    static public func get(orgId: String, complete: @escaping @Sendable (SchemesResponseData) -> ()) -> Request {
+    static public func Get(orgId: String, complete: @escaping @Sendable (SchemesResponseData) -> ()) -> Request {
         return CtrlHubSession.api.request(SchemeRoutes.all(orgId))
             .validate()
             .response(responseSerializer: SchemesSerializer()) { response in
@@ -81,7 +81,7 @@ public class Schemes {
             }
     }
     
-    static public func get(orgId: String, schemeId: String, complete: @escaping @Sendable (SchemeResponseData) -> ()) -> Request {
+    static public func Get(orgId: String, schemeId: String, complete: @escaping @Sendable (SchemeResponseData) -> ()) -> Request {
         return CtrlHubSession.api.request(SchemeRoutes.one(orgId, schemeId))
             .validate()
             .response(responseSerializer: SchemeSerializer()) { response in

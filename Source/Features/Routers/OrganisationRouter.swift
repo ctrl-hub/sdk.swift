@@ -63,7 +63,7 @@ public enum OrganisationsResponseData {
 
 public class Organisations {
     
-    static public func get(complete: @escaping @Sendable (OrganisationsResponseData) -> ()) -> Request {
+    static public func Get(complete: @escaping @Sendable (OrganisationsResponseData) -> ()) -> Request {
         return CtrlHubSession.api.request(OrganisationRoutes.all)
             .validate()
             .response(responseSerializer: OrganisationsSerializer()) { response in
@@ -81,7 +81,7 @@ public class Organisations {
             }
     }
     
-    static public func get(orgId: String, complete: @escaping @Sendable (OrganisationResponseData) -> ()) -> Request {
+    static public func Get(orgId: String, complete: @escaping @Sendable (OrganisationResponseData) -> ()) -> Request {
         return CtrlHubSession.api.request(OrganisationRoutes.one(orgId))
             .validate()
             .response(responseSerializer: OrganisationSerializer()) { response in

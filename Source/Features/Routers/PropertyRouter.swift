@@ -63,7 +63,7 @@ public enum PropertiesResponseData {
 
 public class Properties {
     
-    static public func get(complete: @escaping @Sendable (PropertiesResponseData) -> ()) -> Request {
+    static public func Get(complete: @escaping @Sendable (PropertiesResponseData) -> ()) -> Request {
         return CtrlHubSession.api.request(PropertyRoutes.all)
             .validate()
             .response(responseSerializer: PropertiesSerializer()) { response in
@@ -81,7 +81,7 @@ public class Properties {
             }
     }
     
-    static public func get(propertyId: String, complete: @escaping @Sendable (PropertyResponseData) -> ()) -> Request {
+    static public func Get(propertyId: String, complete: @escaping @Sendable (PropertyResponseData) -> ()) -> Request {
         return CtrlHubSession.api.request(PropertyRoutes.one(propertyId))
             .validate()
             .response(responseSerializer: PropertySerializer()) { response in

@@ -63,7 +63,7 @@ public enum PermissionsResponseData {
 
 public class Permissions {
     
-    static public func get(complete: @escaping @Sendable (PermissionsResponseData) -> ()) -> Request {
+    static public func Get(complete: @escaping @Sendable (PermissionsResponseData) -> ()) -> Request {
         return CtrlHubSession.api.request(PermissionRoutes.all)
             .validate()
             .response(responseSerializer: PermissionsSerializer()) { response in
@@ -81,7 +81,7 @@ public class Permissions {
             }
     }
     
-    static public func get(permissionId: String, complete: @escaping @Sendable (PermissionResponseData) -> ()) -> Request {
+    static public func Get(permissionId: String, complete: @escaping @Sendable (PermissionResponseData) -> ()) -> Request {
         return CtrlHubSession.api.request(PermissionRoutes.one(permissionId))
             .validate()
             .response(responseSerializer: PermissionSerializer()) { response in

@@ -63,7 +63,7 @@ public enum RolesResponseData {
 
 public class Roles {
     
-    static public func get(complete: @escaping @Sendable (RolesResponseData) -> ()) -> Request {
+    static public func Get(complete: @escaping @Sendable (RolesResponseData) -> ()) -> Request {
         return CtrlHubSession.api.request(RoleRoutes.all)
             .validate()
             .response(responseSerializer: RolesSerializer()) { response in
@@ -81,7 +81,7 @@ public class Roles {
             }
     }
     
-    static public func get(roleId: String, complete: @escaping @Sendable (RoleResponseData) -> ()) -> Request {
+    static public func Get(roleId: String, complete: @escaping @Sendable (RoleResponseData) -> ()) -> Request {
         return CtrlHubSession.api.request(RoleRoutes.one(roleId))
             .validate()
             .response(responseSerializer: RoleSerializer()) { response in

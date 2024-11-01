@@ -36,7 +36,7 @@ To use the SDK, you need to import the package before calling any methods:
 ```swift
 import CtrlHub
 
-// Read the configuration from the CtrlHub.plist in your app bundle:
+// Read the configuration from the CtrlHubConfig.plist in your app bundle:
 if let configuration = CtrlHub.Config() {
     CtrlHub.config = configuration
 } else {
@@ -44,7 +44,7 @@ if let configuration = CtrlHub.Config() {
 }
 
 // Make requests to Ctrl Hub via the SDK:
-let _ = CtrlHub.ServiceAccounts.get(org: "50d096a7-d686-4c1a-bdfd-a084f42e8043") { response in
+let _ = CtrlHub.ServiceAccounts.Get(org: "50d096a7-d686-4c1a-bdfd-a084f42e8043") { response in
     switch response {
     case .Success(let data):
         debugPrint("service accounts count:", data.serviceAccounts.count)
@@ -65,7 +65,7 @@ Calls via the SDK to the API will return the Alamofire request that was used. Th
 For example:
 
 ```swift
-CtrlHub.Organisations.get() { response in
+CtrlHub.Organisations.Get() { response in
     // handle the response
 }
 ```
@@ -73,7 +73,7 @@ CtrlHub.Organisations.get() { response in
 Is similar to:
 
 ```swift
-let _ = CtrlHub.Organisations.get() { response in
+let _ = CtrlHub.Organisations.Get() { response in
     // handle the response
 }
 ```
@@ -81,7 +81,7 @@ let _ = CtrlHub.Organisations.get() { response in
 And of course, if you'd like to mapiulate the request, you can:
 
 ```swift
-let request = CtrlHub.Organisations.get() { response in
+let request = CtrlHub.Organisations.Get() { response in
     // handle the response
 }
 // do something with request, e.g. `request.cancel()`
@@ -95,7 +95,7 @@ let request = CtrlHub.Organisations.get() { response in
 Get all the organisations a user can access:
 
 ```swift
-CtrlHub.Organisations.get() { response in
+CtrlHub.Organisations.Get() { response in
     switch response {
     case .success(let data):
         debugPrint(data)
@@ -109,7 +109,7 @@ Get an organisation that the user can access:
 
 ```swift
 let orgId = "ebfca9a0-7dc3-4648-b074-d87a95884492"
-CtrlHub.Organisations.get(orgId: orgId) { response in
+CtrlHub.Organisations.Get(orgId: orgId) { response in
     switch response {
     case .success(let data):
         debugPrint(data)

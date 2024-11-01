@@ -83,7 +83,7 @@ public enum RequestLogsResponseData {
 
 public class ServiceAccounts {
 
-    static public func get(orgId: String, complete: @escaping @Sendable (ServiceAccountsResponseData) -> ()) -> Request {
+    static public func Get(orgId: String, complete: @escaping @Sendable (ServiceAccountsResponseData) -> ()) -> Request {
         return CtrlHubSession.api.request(ServiceAccountRoutes.all(orgId))
             .validate()
             .response(responseSerializer: ServiceAccountsSerializer()) { response in
@@ -101,7 +101,7 @@ public class ServiceAccounts {
             }
     }
 
-    static public func get(orgId: String, serviceAccountId: String, complete: @escaping @Sendable (ServiceAccountResponseData) -> ()) -> Request {
+    static public func Get(orgId: String, serviceAccountId: String, complete: @escaping @Sendable (ServiceAccountResponseData) -> ()) -> Request {
         return CtrlHubSession.api.request(ServiceAccountRoutes.one(orgId, serviceAccountId))
             .validate()
             .response(responseSerializer: ServiceAccountSerializer()) { response in
@@ -119,7 +119,7 @@ public class ServiceAccounts {
             }
     }
 
-    static public func logs(orgId: String, serviceAccountId: String, complete: @escaping @Sendable (RequestLogsResponseData) -> ()) -> Request {
+    static public func Logs(orgId: String, serviceAccountId: String, complete: @escaping @Sendable (RequestLogsResponseData) -> ()) -> Request {
         return CtrlHubSession.api.request(ServiceAccountRoutes.logs(orgId, serviceAccountId))
             .validate()
             .response(responseSerializer: RequestLogsSerializer()) { response in
@@ -137,7 +137,7 @@ public class ServiceAccounts {
             }
     }
 
-    static public func log(orgId: String, serviceAccountId: String, logId: String, complete: @escaping @Sendable (RequestLogResponseData) -> ()) -> Request {
+    static public func Log(orgId: String, serviceAccountId: String, logId: String, complete: @escaping @Sendable (RequestLogResponseData) -> ()) -> Request {
         return CtrlHubSession.api.request(ServiceAccountRoutes.log(orgId, serviceAccountId, logId))
             .validate()
             .response(responseSerializer: RequestLogSerializer()) { response in
