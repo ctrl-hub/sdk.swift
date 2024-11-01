@@ -40,3 +40,11 @@ public struct Scheme: Sendable, Equatable, Identifiable {
 
     @ResourceRelationship(key: "work_orders") public var workOrders: [WorkOrder]
 }
+
+/**
+ SchemesMeta is the top level meta returned by the API
+ */
+public struct SchemesMeta: Sendable, Equatable, Codable {
+    public var counts: CountMeta
+    public var page: PageMeta
+}

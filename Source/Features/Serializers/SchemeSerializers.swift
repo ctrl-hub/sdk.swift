@@ -9,13 +9,19 @@ import Foundation
 import JSONAPI
 import Alamofire
 
+typealias SchemeDocument = CompoundDocument<Scheme, SchemesMeta>
+typealias SchemesDocument = CompoundDocument<[Scheme], SchemesMeta>
+
 final class SchemesSerializer: ResponseSerializer {
     func serialize(request: URLRequest?,
                    response: HTTPURLResponse?,
                    data: Data?,
                    error: Error?) throws -> [Scheme] {
         let decoder = JSONAPIDecoder()
-        return try decoder.decode([Scheme].self, from: data!)
+
+        let document = try decoder.decode(SchemesDocument.self, from: data!)
+        debugPrint(document.meta)
+        return document.data
     }
 }
 
@@ -25,6 +31,7 @@ final class SchemeSerializer: ResponseSerializer {
                    data: Data?,
                    error: Error?) throws -> Scheme {
         let decoder = JSONAPIDecoder()
-        return try decoder.decode(Scheme.self, from: data!)
+        let document = try decoder.decode(SchemeDocument.self, from: data!)
+        return document.data
     }
 }
