@@ -1,6 +1,6 @@
 //
 //  Log.swift
-//  CtrlHubAPI
+//  CtrlHub
 //
 //  Created by Andrew Waters on 27/10/2024.
 //
@@ -26,7 +26,7 @@ class Log {
         let config = Config.currentConfig
 
         if config == nil || (config!.logsEnabled && config!.logLevel == .debug) {
-            NSLog("[CTRLHUBAPI] [DEBUG] \(msg)")
+            NSLog("[CtrlHub] [DEBUG] \(msg)")
         }
     }
 
@@ -41,7 +41,7 @@ class Log {
         let config = Config.currentConfig
 
         if config == nil || (config!.logsEnabled && (config!.logLevel == .debug || config!.logLevel == .info)) {
-            NSLog("[CTRLHUBAPI] [INFO] \(msg)")
+            NSLog("[CtrlHub] [INFO] \(msg)")
         }
     }
 
@@ -56,7 +56,7 @@ class Log {
         let config = Config.currentConfig
 
         if config == nil || config!.logsEnabled {
-            NSLog("[CTRLHUBAPI] [ERROR] \(msg)")
+            NSLog("[CtrlHub] [ERROR] \(msg)")
         }
     }
 

@@ -1,6 +1,6 @@
 //
 //  RequestError.swift
-//  CtrlHubAPI
+//  CtrlHub
 //
 //  Created by Andrew Waters on 28/10/2024.
 //

@@ -1,6 +1,6 @@
 //
 //  Label.swift
-//  CtrlHubAPI
+//  CtrlHub
 //
 //  Created by Andrew Waters on 31/10/2024.
 //

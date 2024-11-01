@@ -26,7 +26,7 @@ let package = Package(
             dependencies: ["Alamofire", .product(name: "JSONAPI", package: "swift-jsonapi")]
         ),
         .testTarget(
-            name: "CtrlHubAPITests",
+            name: "CtrlHubTests",
             dependencies: ["CtrlHub"]
         ),
     ]

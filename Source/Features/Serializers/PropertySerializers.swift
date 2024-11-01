@@ -1,6 +1,6 @@
 //
 //  PropertySerializers.swift
-//  CtrlHubAPI
+//  CtrlHub
 //
 //  Created by Andrew Waters on 29/10/2024.
 //

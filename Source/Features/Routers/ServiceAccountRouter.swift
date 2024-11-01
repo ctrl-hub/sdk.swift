@@ -1,6 +1,6 @@
 //
 //  ServiceAccountRouter.swift
-//  CtrlHubAPI
+//  CtrlHub
 //
 //  Created by Andrew Waters on 27/10/2024.
 //
@@ -21,7 +21,7 @@ enum ServiceAccountRoutes {
         // TODO: - this needs to come from Config
         return URL(string: "https://api.ctrl-hub.dev")!
     }
-    
+
     var path: String {
         switch self {
         case .all(let orgId):
@@ -34,7 +34,7 @@ enum ServiceAccountRoutes {
             return "/v3/orgs/\(orgId)/admin/iam/service-accounts/\(serviceAccountId)/logs/\(logId)"
         }
     }
-    
+
     var method: HTTPMethod {
         switch self {
         case .all:
@@ -82,7 +82,7 @@ public enum RequestLogsResponseData {
 // MARK: - Interface
 
 public class ServiceAccounts {
-    
+
     static public func get(orgId: String, complete: @escaping @Sendable (ServiceAccountsResponseData) -> ()) -> Request {
         return CtrlHubSession.api.request(ServiceAccountRoutes.all(orgId))
             .validate()
@@ -100,7 +100,7 @@ public class ServiceAccounts {
                 }
             }
     }
-    
+
     static public func get(orgId: String, serviceAccountId: String, complete: @escaping @Sendable (ServiceAccountResponseData) -> ()) -> Request {
         return CtrlHubSession.api.request(ServiceAccountRoutes.one(orgId, serviceAccountId))
             .validate()
@@ -118,7 +118,7 @@ public class ServiceAccounts {
                 }
             }
     }
-    
+
     static public func logs(orgId: String, serviceAccountId: String, complete: @escaping @Sendable (RequestLogsResponseData) -> ()) -> Request {
         return CtrlHubSession.api.request(ServiceAccountRoutes.logs(orgId, serviceAccountId))
             .validate()
@@ -136,7 +136,7 @@ public class ServiceAccounts {
                 }
             }
     }
-    
+
     static public func log(orgId: String, serviceAccountId: String, logId: String, complete: @escaping @Sendable (RequestLogResponseData) -> ()) -> Request {
         return CtrlHubSession.api.request(ServiceAccountRoutes.log(orgId, serviceAccountId, logId))
             .validate()

@@ -1,6 +1,6 @@
 //
 //  Meta.swift
-//  CtrlHubAPI
+//  CtrlHub
 //
 //  Created by Andrew Waters on 01/11/2024.
 //
