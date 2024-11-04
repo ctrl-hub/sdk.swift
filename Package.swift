@@ -15,7 +15,6 @@ let package = Package(
             targets: ["CtrlHub"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/Alamofire/Alamofire.git", from: "5.10.1"),
         .package(url: "https://github.com/DataDog/swift-jsonapi.git", from: "0.1.1"),
     ],
     targets: [
@@ -23,7 +22,7 @@ let package = Package(
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
             name: "CtrlHub",
-            dependencies: ["Alamofire", .product(name: "JSONAPI", package: "swift-jsonapi")]
+            dependencies: [.product(name: "JSONAPI", package: "swift-jsonapi")]
         ),
         .testTarget(
             name: "CtrlHubTests",

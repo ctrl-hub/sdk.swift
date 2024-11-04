@@ -8,94 +8,46 @@ import Foundation
 import Alamofire
 import JSONAPI
 
-// MARK: - Routes
+// MARK: - Router
 
-enum RoleRoutes {
-    case all
-    case one(String)
+enum RoleRouter: Route {
+    case All
+    case One(String)
 
-    var baseURL: URL {
-        // TODO: - this needs to come from Config
-        return URL(string: "https://api.ctrl-hub.dev")!
-    }
-    
     var path: String {
         switch self {
-        case .all:
+        case .All:
             return "/v3/admin/iam/roles"
-        case .one(let RoleId):
+        case .One(let RoleId):
             return "/v3/admin/iam/roles/\(RoleId)"
         }
     }
     
-    var method: HTTPMethod {
+    var method: String {
         switch self {
-        case .all:
-            return .get
-        case .one:
-            return .get
+        case .All:
+            return "GET"
+        case .One:
+            return "GET"
         }
     }
 }
 
-extension RoleRoutes: URLRequestConvertible {
-    func asURLRequest() throws -> URLRequest {
-        var request = URLRequest(url: baseURL.appendingPathComponent(path))
-        request.method = method
-        return try URLEncoding.default.encode(request, with: nil)
-    }
-}
-
-// MARK: - Reponse Data
-
-public enum RoleResponseData {
-    case success(Role)
-    case fail(RequestError)
-}
-
-public enum RolesResponseData {
-    case success([Role])
-    case fail(RequestError)
-}
-
 // MARK: - Interface
 
-public class Roles {
-    
-    static public func Get(complete: @escaping @Sendable (RolesResponseData) -> ()) -> Request {
-        return CtrlHubSession.api.request(RoleRoutes.all)
-            .validate()
-            .response(responseSerializer: RolesSerializer()) { response in
-                switch response.result {
-                case .success:
-                    complete(.success(
-                        response.value!
-                    ))
-                case let .failure(error):
-                    complete(.fail(RequestError(
-                        code: response.response?.statusCode ?? 0,
-                        message: error.failureReason ?? "Unknown error"
-                    )))
-                }
-            }
-    }
-    
-    static public func Get(roleId: String, complete: @escaping @Sendable (RoleResponseData) -> ()) -> Request {
-        return CtrlHubSession.api.request(RoleRoutes.one(roleId))
-            .validate()
-            .response(responseSerializer: RoleSerializer()) { response in
-                switch response.result {
-                case .success:
-                    complete(.success(
-                        response.value!
-                    ))
-                case let .failure(error):
-                    complete(.fail(RequestError(
-                        code: response.response?.statusCode ?? 0,
-                        message: error.failureReason ?? "Unknown error"
-                    )))
-                }
-            }
+public actor Roles {
+
+    @MainActor public static let shared = Roles()
+    private init() {}
+    private let decoder = JSONAPIDecoder()
+
+    public func Get() async throws -> [Role] {
+        let (data, response) = try await RoleRouter.All.Request()
+        return try decoder.decode([Role].self, from: data)
     }
 
+    public func Get(id: String) async throws -> Role? {
+        let (data, response) = try await RoleRouter.One(id).Request()
+        return try decoder.decode(Role.self, from: data)
+    }
 }

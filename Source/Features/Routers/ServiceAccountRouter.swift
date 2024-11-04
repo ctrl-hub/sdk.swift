@@ -8,149 +8,67 @@ import Foundation
 import Alamofire
 import JSONAPI
 
-// MARK: - Routes
+// MARK: - Router
 
-enum ServiceAccountRoutes {
-    case all(String)
-    case one(String, String)
-    case logs(String, String)
-    case log(String, String, String)
-
-    var baseURL: URL {
-        // TODO: - this needs to come from Config
-        return URL(string: "https://api.ctrl-hub.dev")!
-    }
+enum ServiceAccountRouter: Route {
+    case All(String)
+    case One(String, String)
+    case Logs(String, String)
+    case Log(String, String, String)
 
     var path: String {
         switch self {
-        case .all(let orgId):
+        case .All(let orgId):
             return "/v3/orgs/\(orgId)/admin/iam/service-accounts"
-        case .one(let orgId, let serviceAccountId):
+        case .One(let orgId, let serviceAccountId):
             return "/v3/orgs/\(orgId)/admin/iam/service-accounts/\(serviceAccountId)"
-        case .logs(let orgId, let serviceAccountId):
+        case .Logs(let orgId, let serviceAccountId):
             return "/v3/orgs/\(orgId)/admin/iam/service-accounts/\(serviceAccountId)/logs"
-        case .log(let orgId, let serviceAccountId, let logId):
+        case .Log(let orgId, let serviceAccountId, let logId):
             return "/v3/orgs/\(orgId)/admin/iam/service-accounts/\(serviceAccountId)/logs/\(logId)"
         }
     }
 
-    var method: HTTPMethod {
+    var method: String {
         switch self {
-        case .all:
-            return .get
-        case .one:
-            return .get
-        case .logs:
-            return .get
-        case .log:
-            return .get
+        case .All:
+            return "GET"
+        case .One:
+            return "GET"
+        case .Logs:
+            return "GET"
+        case .Log:
+            return "GET"
         }
     }
 }
 
-extension ServiceAccountRoutes: URLRequestConvertible {
-    func asURLRequest() throws -> URLRequest {
-        var request = URLRequest(url: baseURL.appendingPathComponent(path))
-        request.method = method
-        return try URLEncoding.default.encode(request, with: nil)
-    }
-}
-
-// MARK: - Reponse Data
-
-public enum ServiceAccountResponseData {
-    case success(ServiceAccount)
-    case fail(RequestError)
-}
-
-public enum ServiceAccountsResponseData {
-    case success([ServiceAccount])
-    case fail(RequestError)
-}
-
-public enum RequestLogResponseData {
-    case success(RequestLog)
-    case fail(RequestError)
-}
-
-public enum RequestLogsResponseData {
-    case success([RequestLog])
-    case fail(RequestError)
-}
-
 // MARK: - Interface
 
-public class ServiceAccounts {
+public actor ServiceAccounts {
 
-    static public func Get(orgId: String, complete: @escaping @Sendable (ServiceAccountsResponseData) -> ()) -> Request {
-        return CtrlHubSession.api.request(ServiceAccountRoutes.all(orgId))
-            .validate()
-            .response(responseSerializer: ServiceAccountsSerializer()) { response in
-                switch response.result {
-                case .success:
-                    complete(.success(
-                        response.value!
-                    ))
-                case let .failure(error):
-                    complete(.fail(RequestError(
-                        code: response.response?.statusCode ?? 0,
-                        message: error.failureReason ?? "Unknown error"
-                    )))
-                }
-            }
+    @MainActor public static let shared = ServiceAccounts()
+    private init() {}
+    private let decoder = JSONAPIDecoder()
+
+    public func Get(orgId: String) async throws -> [ServiceAccount] {
+        let (data, response) = try await ServiceAccountRouter.All(orgId).Request()
+        return try decoder.decode([ServiceAccount].self, from: data)
     }
 
-    static public func Get(orgId: String, serviceAccountId: String, complete: @escaping @Sendable (ServiceAccountResponseData) -> ()) -> Request {
-        return CtrlHubSession.api.request(ServiceAccountRoutes.one(orgId, serviceAccountId))
-            .validate()
-            .response(responseSerializer: ServiceAccountSerializer()) { response in
-                switch response.result {
-                case .success:
-                    complete(.success(
-                        response.value!
-                    ))
-                case let .failure(error):
-                    complete(.fail(RequestError(
-                        code: response.response?.statusCode ?? 0,
-                        message: error.failureReason ?? "Unknown error"
-                    )))
-                }
-            }
+    public func Get(orgId: String, serviceAccountId: String) async throws -> ServiceAccount? {
+        let (data, response) = try await ServiceAccountRouter.One(orgId, serviceAccountId).Request()
+        return try decoder.decode(ServiceAccount.self, from: data)
     }
 
-    static public func Logs(orgId: String, serviceAccountId: String, complete: @escaping @Sendable (RequestLogsResponseData) -> ()) -> Request {
-        return CtrlHubSession.api.request(ServiceAccountRoutes.logs(orgId, serviceAccountId))
-            .validate()
-            .response(responseSerializer: RequestLogsSerializer()) { response in
-                switch response.result {
-                case .success:
-                    complete(.success(
-                        response.value!
-                    ))
-                case let .failure(error):
-                    complete(.fail(RequestError(
-                        code: response.response?.statusCode ?? 0,
-                        message: error.failureReason ?? "Unknown error"
-                    )))
-                }
-            }
+    public func Logs(orgId: String, serviceAccountId: String) async throws -> [ServiceAccountLog]? {
+        let (data, response) = try await ServiceAccountRouter.Logs(orgId, serviceAccountId).Request()
+        return try decoder.decode([ServiceAccountLog].self, from: data)
     }
 
-    static public func Log(orgId: String, serviceAccountId: String, logId: String, complete: @escaping @Sendable (RequestLogResponseData) -> ()) -> Request {
-        return CtrlHubSession.api.request(ServiceAccountRoutes.log(orgId, serviceAccountId, logId))
-            .validate()
-            .response(responseSerializer: RequestLogSerializer()) { response in
-                switch response.result {
-                case .success:
-                    complete(.success(
-                        response.value!
-                    ))
-                case let .failure(error):
-                    complete(.fail(RequestError(
-                        code: response.response?.statusCode ?? 0,
-                        message: error.failureReason ?? "Unknown error"
-                    )))
-                }
-            }
+    public func Log(orgId: String, serviceAccountId: String, logId: String) async throws -> ServiceAccountLog? {
+        let (data, response) = try await ServiceAccountRouter.Log(orgId, serviceAccountId, logId).Request()
+        return try decoder.decode(ServiceAccountLog.self, from: data)
     }
+
 }

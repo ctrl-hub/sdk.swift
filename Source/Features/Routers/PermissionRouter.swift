@@ -5,97 +5,48 @@
 // Copyright 2024-Present Ctrl Hub Limited.
 
 import Foundation
-import Alamofire
 import JSONAPI
 
-// MARK: - Routes
+// MARK: - Router
 
-enum PermissionRoutes {
-    case all
-    case one(String)
+enum PermissionRouter: Route {
+    case All
+    case One(String)
 
-    var baseURL: URL {
-        // TODO: - this needs to come from Config
-        return URL(string: "https://api.ctrl-hub.dev")!
-    }
-    
     var path: String {
         switch self {
-        case .all:
+        case .All:
             return "/v3/admin/iam/permissions"
-        case .one(let permissionId):
+        case .One(let permissionId):
             return "/v3/admin/iam/permissions/\(permissionId)"
         }
     }
     
-    var method: HTTPMethod {
+    var method: String {
         switch self {
-        case .all:
-            return .get
-        case .one:
-            return .get
+        case .All:
+            return "GET"
+        case .One:
+            return "GET"
         }
     }
 }
 
-extension PermissionRoutes: URLRequestConvertible {
-    func asURLRequest() throws -> URLRequest {
-        var request = URLRequest(url: baseURL.appendingPathComponent(path))
-        request.method = method
-        return try URLEncoding.default.encode(request, with: nil)
-    }
-}
-
-// MARK: - Reponse Data
-
-public enum PermissionResponseData {
-    case success(Permission)
-    case fail(RequestError)
-}
-
-public enum PermissionsResponseData {
-    case success([Permission])
-    case fail(RequestError)
-}
-
 // MARK: - Interface
 
-public class Permissions {
+public actor Permissions {
     
-    static public func Get(complete: @escaping @Sendable (PermissionsResponseData) -> ()) -> Request {
-        return CtrlHubSession.api.request(PermissionRoutes.all)
-            .validate()
-            .response(responseSerializer: PermissionsSerializer()) { response in
-                switch response.result {
-                case .success:
-                    complete(.success(
-                        response.value!
-                    ))
-                case let .failure(error):
-                    complete(.fail(RequestError(
-                        code: response.response?.statusCode ?? 0,
-                        message: error.failureReason ?? "Unknown error"
-                    )))
-                }
-            }
-    }
-    
-    static public func Get(permissionId: String, complete: @escaping @Sendable (PermissionResponseData) -> ()) -> Request {
-        return CtrlHubSession.api.request(PermissionRoutes.one(permissionId))
-            .validate()
-            .response(responseSerializer: PermissionSerializer()) { response in
-                switch response.result {
-                case .success:
-                    complete(.success(
-                        response.value!
-                    ))
-                case let .failure(error):
-                    complete(.fail(RequestError(
-                        code: response.response?.statusCode ?? 0,
-                        message: error.failureReason ?? "Unknown error"
-                    )))
-                }
-            }
-    }
+    @MainActor public static let shared = Permissions()
+    private init() {}
+    private let decoder = JSONAPIDecoder()
 
+    public func Get() async throws -> [Permission] {
+        let (data, response) = try await PermissionRouter.All.Request()
+        return try decoder.decode([Permission].self, from: data)
+    }
+    
+    public func Get(id: String) async throws -> Permission? {
+        let (data, response) = try await PermissionRouter.One(id).Request()
+        return try decoder.decode(Permission.self, from: data)
+    }
 }

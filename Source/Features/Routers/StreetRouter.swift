@@ -8,94 +8,46 @@ import Foundation
 import Alamofire
 import JSONAPI
 
-// MARK: - Routes
+// MARK: - Router
 
-enum StreetRoutes {
-    case all
-    case one(String)
+enum StreetRouter: Route {
+    case All
+    case One(String)
 
-    var baseURL: URL {
-        // TODO: - this needs to come from Config
-        return URL(string: "https://api.ctrl-hub.dev")!
-    }
-    
     var path: String {
         switch self {
-        case .all:
+        case .All:
             return "/v3/governance/streets"
-        case .one(let streetId):
+        case .One(let streetId):
             return "/v3/governance/streets/\(streetId)"
         }
     }
     
-    var method: HTTPMethod {
+    var method: String {
         switch self {
-        case .all:
-            return .get
-        case .one:
-            return .get
+        case .All:
+            return "GET"
+        case .One:
+            return "GET"
         }
     }
 }
 
-extension StreetRoutes: URLRequestConvertible {
-    func asURLRequest() throws -> URLRequest {
-        var request = URLRequest(url: baseURL.appendingPathComponent(path))
-        request.method = method
-        return try URLEncoding.default.encode(request, with: nil)
-    }
-}
-
-// MARK: - Reponse Data
-
-public enum StreetResponseData {
-    case success(Street)
-    case fail(RequestError)
-}
-
-public enum StreetsResponseData {
-    case success([Street])
-    case fail(RequestError)
-}
-
 // MARK: - Interface
 
-public class Streets {
-    
-    static public func Get(complete: @escaping @Sendable (StreetsResponseData) -> ()) -> Request {
-        return CtrlHubSession.api.request(StreetRoutes.all)
-            .validate()
-            .response(responseSerializer: StreetsSerializer()) { response in
-                switch response.result {
-                case .success:
-                    complete(.success(
-                        response.value!
-                    ))
-                case let .failure(error):
-                    complete(.fail(RequestError(
-                        code: response.response?.statusCode ?? 0,
-                        message: error.failureReason ?? "Unknown error"
-                    )))
-                }
-            }
-    }
-    
-    static public func Get(propertyId: String, complete: @escaping @Sendable (StreetResponseData) -> ()) -> Request {
-        return CtrlHubSession.api.request(StreetRoutes.one(propertyId))
-            .validate()
-            .response(responseSerializer: StreetSerializer()) { response in
-                switch response.result {
-                case .success:
-                    complete(.success(
-                        response.value!
-                    ))
-                case let .failure(error):
-                    complete(.fail(RequestError(
-                        code: response.response?.statusCode ?? 0,
-                        message: error.failureReason ?? "Unknown error"
-                    )))
-                }
-            }
-    }
+public actor Streets {
 
+    @MainActor public static let shared = Streets()
+    private init() {}
+    private let decoder = JSONAPIDecoder()
+
+    public func Get() async throws -> [Street] {
+        let (data, response) = try await StreetRouter.All.Request()
+        return try decoder.decode([Street].self, from: data)
+    }
+    
+    public func Get(streetId: String) async throws -> Street? {
+        let (data, response) = try await StreetRouter.One(streetId).Request()
+        return try decoder.decode(Street.self, from: data)
+    }
 }

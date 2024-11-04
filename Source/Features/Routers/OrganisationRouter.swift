@@ -5,97 +5,48 @@
 // Copyright 2024-Present Ctrl Hub Limited.
 
 import Foundation
-import Alamofire
 import JSONAPI
 
-// MARK: - Routes
+// MARK: - Router
 
-enum OrganisationRoutes {
-    case all
-    case one(String)
+enum OrganisationRouter: Route {
+    case All
+    case One(String)
 
-    var baseURL: URL {
-        // TODO: - this needs to come from Config
-        return URL(string: "https://api.ctrl-hub.dev")!
-    }
-    
     var path: String {
         switch self {
-        case .all:
-            return "/v3/orgs"
-        case .one(let orgId):
-            return "/v3/orgs/\(orgId)"
+        case .All:
+            return "v3/orgs"
+        case .One(let orgId):
+            return "v3/orgs/\(orgId)"
         }
     }
     
-    var method: HTTPMethod {
+    var method: String {
         switch self {
-        case .all:
-            return .get
-        case .one:
-            return .get
+        case .All:
+            return "GET"
+        case .One:
+            return "GET"
         }
     }
-}
-
-extension OrganisationRoutes: URLRequestConvertible {
-    func asURLRequest() throws -> URLRequest {
-        var request = URLRequest(url: baseURL.appendingPathComponent(path))
-        request.method = method
-        return try URLEncoding.default.encode(request, with: nil)
-    }
-}
-
-// MARK: - Reponse Data
-
-public enum OrganisationResponseData {
-    case success(Organisation)
-    case fail(RequestError)
-}
-
-public enum OrganisationsResponseData {
-    case success([Organisation])
-    case fail(RequestError)
 }
 
 // MARK: - Interface
 
-public class Organisations {
-    
-    static public func Get(complete: @escaping @Sendable (OrganisationsResponseData) -> ()) -> Request {
-        return CtrlHubSession.api.request(OrganisationRoutes.all)
-            .validate()
-            .response(responseSerializer: OrganisationsSerializer()) { response in
-                switch response.result {
-                case .success:
-                    complete(.success(
-                        response.value!
-                    ))
-                case let .failure(error):
-                    complete(.fail(RequestError(
-                        code: response.response?.statusCode ?? 0,
-                        message: error.failureReason ?? "Unknown error"
-                    )))
-                }
-            }
-    }
-    
-    static public func Get(orgId: String, complete: @escaping @Sendable (OrganisationResponseData) -> ()) -> Request {
-        return CtrlHubSession.api.request(OrganisationRoutes.one(orgId))
-            .validate()
-            .response(responseSerializer: OrganisationSerializer()) { response in
-                switch response.result {
-                case .success:
-                    complete(.success(
-                        response.value!
-                    ))
-                case let .failure(error):
-                    complete(.fail(RequestError(
-                        code: response.response?.statusCode ?? 0,
-                        message: error.failureReason ?? "Unknown error"
-                    )))
-                }
-            }
+public actor Organisations {
+
+    @MainActor public static let shared = Organisations()
+    private init() {}
+    private let decoder = JSONAPIDecoder()
+
+    public func Get() async throws -> [Organisation] {
+        let (data, response) = try await OrganisationRouter.All.Request()
+        return try decoder.decode([Organisation].self, from: data)
     }
 
+    public func Get(id: String) async throws -> Organisation? {
+        let (data, response) = try await OrganisationRouter.One(id).Request()
+        return try decoder.decode(Organisation.self, from: data)
+    }
 }

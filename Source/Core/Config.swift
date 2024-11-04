@@ -48,8 +48,8 @@ public class Config {
         self.logsEnabled = logsEnabled
         self.logLevel = logLevel
 
-        self.authDomain = (config["authDomain"] as? String)!
-        self.apiDomain = (config["apiDomain"] as? String)!
+        self.authDomain = (config["authDomain"] as? String ?? "")
+        self.apiDomain = (config["apiDomain"] as? String ?? "")
         
         if !self.authDomain.hasSuffix("/") {
             self.authDomain.append("/")

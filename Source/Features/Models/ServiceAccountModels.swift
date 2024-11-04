@@ -66,7 +66,7 @@ public struct RequestLog: Sendable, Equatable {
     @ResourceAttribute() public var request: RequestLogRequest
 
     /// The response that was sent to the caller
-    @ResourceAttribute() public var response: RequestLogResponse
+    @ResourceAttribute() public var response: ServiceAccountLog
 }
 
 /**
@@ -114,7 +114,7 @@ public struct RequestLogRequest: Codable, Equatable, Sendable {
 /**
  The response that was sent to the caller
 */
-public struct RequestLogResponse: Codable, Equatable, Sendable {
+public struct ServiceAccountLog: Codable, Equatable, Sendable {
 
     /// The time the response was sent
     public var time: String

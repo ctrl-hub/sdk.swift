@@ -12,3 +12,4 @@ public var config: Config? {
         Config.currentConfig = newConfig
     }
 }
+
