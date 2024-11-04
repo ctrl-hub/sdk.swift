@@ -22,7 +22,7 @@ extension Route {
         let base = URL(string: Config.currentConfig!.apiDomain)!
         var request = URLRequest(url: base.appendingPathComponent(path))
         request.httpMethod = method
-        request.headers.add(name: "X-Session-Token", value: accessToken)
+        request.setValue(accessToken, forHTTPHeaderField: "X-Session-Token")
         return request
     }
     

@@ -5,7 +5,6 @@
 // Copyright 2024-Present Ctrl Hub Limited.
 
 import Foundation
-import Alamofire
 import JSONAPI
 
 // MARK: - Router
