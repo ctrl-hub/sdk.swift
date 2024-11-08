@@ -13,7 +13,7 @@ import JSONAPI
 public struct Vehicle: Sendable, Equatable, Identifiable {
     public var id: String
 
-    @ResourceAttribute() public var vin: String
+    @ResourceAttribute() public var vin: String?
 
     @ResourceAttribute() public var registration: String?
 
