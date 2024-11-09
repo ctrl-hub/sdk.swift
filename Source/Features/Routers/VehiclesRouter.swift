@@ -36,7 +36,7 @@ public actor Vehicles {
     private let decoder = JSONAPIDecoder()
 
     public func Get(orgId: String) async throws -> [Vehicle] {
-        let (data, response) = try await VehiclesRouter.All(orgId).Request()
+        let (data, response) = try await VehiclesRouter.All(orgId.lowercased()).Request()
         return try decoder.decode([Vehicle].self, from: data)
     }
 }

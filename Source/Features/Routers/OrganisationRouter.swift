@@ -46,7 +46,7 @@ public actor Organisations {
     }
 
     public func Get(id: String) async throws -> Organisation? {
-        let (data, response) = try await OrganisationRouter.One(id).Request()
+        let (data, response) = try await OrganisationRouter.One(id.lowercased()).Request()
         return try decoder.decode(Organisation.self, from: data)
     }
 }

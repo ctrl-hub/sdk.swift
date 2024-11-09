@@ -46,7 +46,7 @@ public actor Properties {
     }
     
     public func Get(id: String) async throws -> Property? {
-        let (data, response) = try await PropertyRouter.One(id).Request()
+        let (data, response) = try await PropertyRouter.One(id.lowercased()).Request()
         return try decoder.decode(Property.self, from: data)
     }
 }

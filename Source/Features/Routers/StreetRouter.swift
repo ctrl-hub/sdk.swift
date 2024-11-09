@@ -46,7 +46,7 @@ public actor Streets {
     }
     
     public func Get(streetId: String) async throws -> Street? {
-        let (data, response) = try await StreetRouter.One(streetId).Request()
+        let (data, response) = try await StreetRouter.One(streetId.lowercased()).Request()
         return try decoder.decode(Street.self, from: data)
     }
 }

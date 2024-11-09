@@ -46,7 +46,7 @@ public actor Permissions {
     }
     
     public func Get(id: String) async throws -> Permission? {
-        let (data, response) = try await PermissionRouter.One(id).Request()
+        let (data, response) = try await PermissionRouter.One(id.lowercased()).Request()
         return try decoder.decode(Permission.self, from: data)
     }
 }

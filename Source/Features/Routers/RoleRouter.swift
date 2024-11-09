@@ -46,7 +46,7 @@ public actor Roles {
     }
 
     public func Get(id: String) async throws -> Role? {
-        let (data, response) = try await RoleRouter.One(id).Request()
+        let (data, response) = try await RoleRouter.One(id.lowercased()).Request()
         return try decoder.decode(Role.self, from: data)
     }
 }

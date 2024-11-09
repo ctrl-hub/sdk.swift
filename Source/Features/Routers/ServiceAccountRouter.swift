@@ -51,22 +51,22 @@ public actor ServiceAccounts {
     private let decoder = JSONAPIDecoder()
 
     public func Get(orgId: String) async throws -> [ServiceAccount] {
-        let (data, response) = try await ServiceAccountRouter.All(orgId).Request()
+        let (data, response) = try await ServiceAccountRouter.All(orgId.lowercased()).Request()
         return try decoder.decode([ServiceAccount].self, from: data)
     }
 
     public func Get(orgId: String, serviceAccountId: String) async throws -> ServiceAccount? {
-        let (data, response) = try await ServiceAccountRouter.One(orgId, serviceAccountId).Request()
+        let (data, response) = try await ServiceAccountRouter.One(orgId.lowercased(), serviceAccountId.lowercased()).Request()
         return try decoder.decode(ServiceAccount.self, from: data)
     }
 
     public func Logs(orgId: String, serviceAccountId: String) async throws -> [ServiceAccountLog]? {
-        let (data, response) = try await ServiceAccountRouter.Logs(orgId, serviceAccountId).Request()
+        let (data, response) = try await ServiceAccountRouter.Logs(orgId.lowercased(), serviceAccountId.lowercased()).Request()
         return try decoder.decode([ServiceAccountLog].self, from: data)
     }
 
     public func Log(orgId: String, serviceAccountId: String, logId: String) async throws -> ServiceAccountLog? {
-        let (data, response) = try await ServiceAccountRouter.Log(orgId, serviceAccountId, logId).Request()
+        let (data, response) = try await ServiceAccountRouter.Log(orgId.lowercased(), serviceAccountId.lowercased(), logId.lowercased()).Request()
         return try decoder.decode(ServiceAccountLog.self, from: data)
     }
 

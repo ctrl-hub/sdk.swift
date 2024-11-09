@@ -41,12 +41,12 @@ public actor Schemes {
     private let decoder = JSONAPIDecoder()
 
     public func Get(orgId: String) async throws -> [Scheme] {
-        let (data, response) = try await SchemeRouter.All(orgId).Request()
+        let (data, response) = try await SchemeRouter.All(orgId.lowercased()).Request()
         return try decoder.decode([Scheme].self, from: data)
     }
 
     public func Get(orgId: String, schemeId: String) async throws -> Scheme? {
-        let (data, response) = try await SchemeRouter.One(orgId, schemeId).Request()
+        let (data, response) = try await SchemeRouter.One(orgId.lowercased(), schemeId.lowercased()).Request()
         return try decoder.decode(Scheme.self, from: data)
     }
 }
