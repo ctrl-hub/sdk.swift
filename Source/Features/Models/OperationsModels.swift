@@ -15,17 +15,25 @@ public struct Operation: Sendable, Equatable, Identifiable {
 
     @ResourceAttribute() public var code: String?
 
+    @ResourceAttribute() public var name: String?
+
     @ResourceAttribute() public var description: String?
 
     @ResourceAttribute(key: "start_date") public var startDate: String?
     
     @ResourceAttribute(key: "end_date") public var endDate: String?
 
+    @ResourceAttribute() public var usrns: [Int64]
+
+    @ResourceAttribute() public var uprns: [Int64]
+
     @ResourceAttribute() public var aborted: Bool
 
     @ResourceAttribute() public var cancelled: Bool
 
+    @ResourceAttribute() public var completed: Bool
+
     @ResourceAttribute() public var labels: [Label]
 
-    @ResourceAttribute() public var completed: Bool
+    @ResourceAttribute(key: "type") public var operationType: String
 }
