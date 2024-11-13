@@ -19,5 +19,32 @@ public struct Vehicle: Sendable, Equatable, Identifiable {
 
     @ResourceAttribute() public var description: String?
 
-    @ResourceAttribute() public var emissions: Float64?
+    @ResourceRelationship() public var model: VechicleModel
+
+    @ResourceRelationship() public var specification: VechicleSpecification
+}
+
+@ResourceWrapper(type: "vehicle-manufacturers")
+public struct VehicleManufacturer: Sendable, Equatable, Identifiable {
+    public var id: String
+
+    @ResourceAttribute() public var name: String
+}
+
+@ResourceWrapper(type: "vehicle-models")
+public struct VechicleModel: Sendable, Equatable, Identifiable {
+    public var id: String
+
+    @ResourceRelationship() public var manufacturer: VehicleManufacturer
+
+    @ResourceAttribute() public var name: String
+}
+
+@ResourceWrapper(type: "vehicle-specifications")
+public struct VechicleSpecification: Sendable, Equatable, Identifiable {
+    public var id: String
+
+    @ResourceAttribute() public var emissions: Double
+
+    @ResourceAttribute() public var transmission: String
 }
