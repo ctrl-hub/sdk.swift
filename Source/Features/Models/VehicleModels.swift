@@ -22,6 +22,8 @@ public struct Vehicle: Sendable, Equatable, Identifiable {
     @ResourceRelationship() public var model: VechicleModel
 
     @ResourceRelationship() public var specification: VechicleSpecification
+    
+    @ResourceRelationship() public var equipment: [EquipmentItem]
 }
 
 @ResourceWrapper(type: "vehicle-manufacturers")
