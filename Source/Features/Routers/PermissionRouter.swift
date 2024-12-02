@@ -16,9 +16,9 @@ enum PermissionRouter: Route {
     var path: String {
         switch self {
         case .All:
-            return "/v3/admin/iam/permissions"
+            return "/v3/iam/permissions"
         case .One(let permissionId):
-            return "/v3/admin/iam/permissions/\(permissionId)"
+            return "/v3/iam/permissions/\(permissionId)"
         }
     }
     

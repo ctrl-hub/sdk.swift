@@ -18,13 +18,13 @@ enum ServiceAccountRouter: Route {
     var path: String {
         switch self {
         case .All(let orgId):
-            return "/v3/orgs/\(orgId)/admin/iam/service-accounts"
+            return "/v3/orgs/\(orgId)/iam/service-accounts"
         case .One(let orgId, let serviceAccountId):
-            return "/v3/orgs/\(orgId)/admin/iam/service-accounts/\(serviceAccountId)"
+            return "/v3/orgs/\(orgId)/iam/service-accounts/\(serviceAccountId)"
         case .Logs(let orgId, let serviceAccountId):
-            return "/v3/orgs/\(orgId)/admin/iam/service-accounts/\(serviceAccountId)/logs"
+            return "/v3/orgs/\(orgId)/iam/service-accounts/\(serviceAccountId)/logs"
         case .Log(let orgId, let serviceAccountId, let logId):
-            return "/v3/orgs/\(orgId)/admin/iam/service-accounts/\(serviceAccountId)/logs/\(logId)"
+            return "/v3/orgs/\(orgId)/iam/service-accounts/\(serviceAccountId)/logs/\(logId)"
         }
     }
 
