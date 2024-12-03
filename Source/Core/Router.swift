@@ -14,29 +14,31 @@ protocol Route {
     var method: String { get }
 }
 
+@available(iOS 16.0, *)
 extension Route {
 
     /// For our routers, expose a method to translate the route to
     /// a URLRequest that can be sent to the server
-    func asURLRequest() -> URLRequest {
+    func asURLRequest(parameters: [String: String]) -> URLRequest {
+        let queryItems = parameters.map({ (key, value) -> URLQueryItem in
+            URLQueryItem(name: key, value: String(value))
+        })
         let base = URL(string: Config.currentConfig!.apiDomain)!
-        var request = URLRequest(url: base.appendingPathComponent(path))
+        var request = URLRequest(url: base.appendingPathComponent(path).appending(queryItems: queryItems))
         request.httpMethod = method
         request.setValue(accessToken, forHTTPHeaderField: "X-Session-Token")
         return request
     }
     
-    /// Request makes the request to the backend
+    /// Request makes the request to the backend0
     func Request() async throws -> (Data, URLResponse) {
-        let request = asURLRequest()
+        let request = asURLRequest(parameters: [:])
         return try await URLSession.shared.data(for: request)
-        // TODO: - Make this into a generic, like below:
     }
 
-    //func request<T>(_ element: T.Type, request: URLRequest) async throws -> T? where T: Decodable {
-    //    let decoder = JSONAPIDecoder()
-    //    let (data, response) = try await URLSession.shared.data(for: request)
-    //    return try decoder.decode(Organisation.self, from: data)
-    //}
+    func Request(parameters: [String: String]) async throws -> (Data, URLResponse) {
+        let request = asURLRequest(parameters: parameters)
+        return try await URLSession.shared.data(for: request)
+    }
 
 }

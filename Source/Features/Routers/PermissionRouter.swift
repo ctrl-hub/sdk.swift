@@ -34,6 +34,7 @@ enum PermissionRouter: Route {
 
 // MARK: - Interface
 
+@available(iOS 16.0, *)
 public actor Permissions {
     
     @MainActor public static let shared = Permissions()

@@ -16,6 +16,8 @@ public struct EquipmentItem: Sendable, Equatable, Identifiable {
     @ResourceAttribute() public var serial: String
 
     @ResourceRelationship public var model: EquipmentModel
+
+    @ResourceRelationship public var manufacturer: EquipmentManufacturer
 }
 
 @ResourceWrapper(type: "equipment-models")
@@ -28,7 +30,7 @@ public struct EquipmentModel: Sendable, Equatable, Identifiable {
 
     @ResourceAttribute() public var vibration: EquipmentModelVibration
 
-    @ResourceRelationship public var manufacturer: EquipmentManufacturer
+//    @ResourceRelationship public var manufacturer: EquipmentManufacturer?
 }
 
 public struct EquipmentModelVibration: Codable, Equatable, Sendable {

@@ -29,6 +29,7 @@ enum VehiclesRouter: Route {
 
 // MARK: - Interface
 
+@available(iOS 16.0, *)
 public actor Vehicles {
 
     @MainActor public static let shared = Vehicles()
@@ -36,7 +37,9 @@ public actor Vehicles {
     private let decoder = JSONAPIDecoder()
 
     public func Get(orgId: String) async throws -> [Vehicle] {
-        let (data, response) = try await VehiclesRouter.All(orgId.lowercased()).Request()
+        let (data, response) = try await VehiclesRouter.All(orgId.lowercased()).Request(parameters: [
+            "include": "model,equipment,manufacturer"
+        ])
         return try decoder.decode([Vehicle].self, from: data)
     }
 }

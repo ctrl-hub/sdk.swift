@@ -21,32 +21,38 @@ public struct Vehicle: Sendable, Equatable, Identifiable {
 
     @ResourceRelationship() public var model: VechicleModel
 
-    @ResourceRelationship() public var specification: VechicleSpecification
-    
-    @ResourceRelationship() public var equipment: [EquipmentItem]
+    @ResourceRelationship() public var manufacturer: VechicleManufacturer
+
+    @ResourceRelationship() public var equipment: [VechicleEquipmentItem]
 }
 
-@ResourceWrapper(type: "vehicle-manufacturers")
-public struct VehicleManufacturer: Sendable, Equatable, Identifiable {
+@ResourceWrapper(type: "equipment-items")
+public struct VechicleEquipmentItem: Sendable, Equatable, Identifiable {
     public var id: String
+    
+    @ResourceAttribute() public var serial: String
+}
 
+
+@ResourceWrapper(type: "vehicle-manufacturers")
+public struct VechicleManufacturer: Sendable, Equatable, Identifiable {
+    public var id: String
+    
     @ResourceAttribute() public var name: String
 }
 
 @ResourceWrapper(type: "vehicle-models")
 public struct VechicleModel: Sendable, Equatable, Identifiable {
     public var id: String
-
-    @ResourceRelationship() public var manufacturer: VehicleManufacturer
-
+    
     @ResourceAttribute() public var name: String
+    
+    @ResourceAttribute() public var specification: VechicleSpecification
 }
 
-@ResourceWrapper(type: "vehicle-specifications")
-public struct VechicleSpecification: Sendable, Equatable, Identifiable {
-    public var id: String
+public struct VechicleSpecification: Codable, Equatable, Sendable {
 
-    @ResourceAttribute() public var emissions: Double
+    public var emissions: Double
 
-    @ResourceAttribute() public var transmission: String
+    public var transmission: String
 }

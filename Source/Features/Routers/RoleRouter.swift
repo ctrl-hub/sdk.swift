@@ -34,6 +34,7 @@ enum RoleRouter: Route {
 
 // MARK: - Interface
 
+@available(iOS 16.0, *)
 public actor Roles {
 
     @MainActor public static let shared = Roles()

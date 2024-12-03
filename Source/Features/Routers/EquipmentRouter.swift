@@ -34,6 +34,7 @@ enum EquipmentRouter: Route {
 
 // MARK: - Interface
 
+@available(iOS 16.0, *)
 public actor EquipmentItems {
 
     @MainActor public static let shared = EquipmentItems()
@@ -41,12 +42,17 @@ public actor EquipmentItems {
     private let decoder = JSONAPIDecoder()
 
     public func Get(orgId: String) async throws -> [EquipmentItem] {
-        let (data, response) = try await EquipmentRouter.All(orgId.lowercased()).Request()
+        let (data, response) = try await EquipmentRouter.All(orgId.lowercased()).Request(parameters: [
+            "include": "model,manufacturer"
+        ])
         return try decoder.decode([EquipmentItem].self, from: data)
     }
 
-    public func Get(orgId: String, equipmentId: String) async throws -> EquipmentItem? {
-        let (data, response) = try await EquipmentRouter.One(orgId.lowercased(), equipmentId.lowercased()).Request()
+    public func Get(orgId: String, equipmentId: String) async throws -> EquipmentItem {
+        debugPrint(1)
+        let (data, response) = try await EquipmentRouter.One(orgId.lowercased(), equipmentId.lowercased()).Request(parameters: [
+            "include": "model,manufacturer"
+        ])
         return try decoder.decode(EquipmentItem.self, from: data)
     }
 }

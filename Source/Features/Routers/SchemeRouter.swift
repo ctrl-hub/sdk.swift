@@ -34,6 +34,7 @@ enum SchemeRouter: Route {
 
 // MARK: - Interface
 
+@available(iOS 16.0, *)
 public actor Schemes {
 
     @MainActor public static let shared = Schemes()

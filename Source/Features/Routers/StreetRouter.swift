@@ -34,6 +34,7 @@ enum StreetRouter: Route {
 
 // MARK: - Interface
 
+@available(iOS 16.0, *)
 public actor Streets {
 
     @MainActor public static let shared = Streets()
