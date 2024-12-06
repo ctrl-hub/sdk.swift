@@ -25,6 +25,8 @@ public struct Vehicle: Sendable, Equatable, Identifiable {
 
     @ResourceRelationship() public var manufacturer: VechicleManufacturer
 
+    @ResourceRelationship() public var specification: VehicleSpecification
+
     @ResourceRelationship() public var equipment: [VechicleEquipmentItem]
 }
 
@@ -47,10 +49,6 @@ public struct VechicleModel: Sendable, Equatable, Identifiable {
     public var id: String
 
     @ResourceAttribute() public var name: String
-
-    @ResourceAttribute() public var documentation: [VehicleDocumentation]
-
-    @ResourceAttribute() public var specification: VehicleSpecification
 }
 
 public struct VehicleDocumentation: Codable, Equatable, Sendable {
@@ -62,9 +60,19 @@ public struct VehicleDocumentation: Codable, Equatable, Sendable {
     public var link: String
 }
 
-public struct VehicleSpecification: Codable, Equatable, Sendable {
+@ResourceWrapper(type: "vehicle-specifications")
+public struct VehicleSpecification: Sendable, Equatable, Identifiable {
+    public var id: String
 
-    public var emissions: Double
+    @ResourceAttribute() public var emissions: Double
 
-    public var transmission: String
+    @ResourceAttribute() public var transmission: String
+
+    @ResourceAttribute() public var year: Int
+
+    @ResourceAttribute() public var fuel: String
+
+    @ResourceAttribute() public var engine: String
+
+    @ResourceAttribute() public var documentation: [VehicleDocumentation]
 }
