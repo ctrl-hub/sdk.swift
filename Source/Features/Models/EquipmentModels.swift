@@ -29,8 +29,17 @@ public struct EquipmentModel: Sendable, Equatable, Identifiable {
     @ResourceAttribute() public var name: String
     
     @ResourceAttribute() public var documentation: [EquipmentDocumentation]
-
+    
     @ResourceAttribute() public var specification: EquipmentSpecification
+    
+    @ResourceRelationship public var categories: [EquipmentCategory]
+}
+
+@ResourceWrapper(type: "equipment-categories")
+public struct EquipmentCategory: Sendable, Equatable, Identifiable {
+    public var id: String
+
+    @ResourceAttribute() public var name: String
 }
 
 public struct EquipmentDocumentation: Codable, Equatable, Sendable {

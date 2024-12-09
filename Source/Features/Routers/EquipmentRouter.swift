@@ -43,7 +43,7 @@ public actor EquipmentItems {
 
     public func Get(orgId: String) async throws -> [EquipmentItem] {
         let (data, response) = try await EquipmentRouter.All(orgId.lowercased()).Request(parameters: [
-            "include": "model,manufacturer"
+            "include": "model,manufacturer,model.categories"
         ])
         return try decoder.decode([EquipmentItem].self, from: data)
     }
@@ -51,7 +51,7 @@ public actor EquipmentItems {
     public func Get(orgId: String, equipmentId: String) async throws -> EquipmentItem {
         debugPrint(1)
         let (data, response) = try await EquipmentRouter.One(orgId.lowercased(), equipmentId.lowercased()).Request(parameters: [
-            "include": "model,manufacturer"
+            "include": "model,manufacturer,model.categories"
         ])
         return try decoder.decode(EquipmentItem.self, from: data)
     }
