@@ -32,6 +32,10 @@ enum AuthRouter: Route {
     var domain: String {
         Config.currentConfig!.authDomain
     }
+
+    var useSessionToken: Bool {
+        false
+    }
 }
 
 @available(iOS 16.0, *)

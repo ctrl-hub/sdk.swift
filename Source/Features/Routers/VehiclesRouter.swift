@@ -29,6 +29,10 @@ enum VehiclesRouter: Route {
     var domain: String {
         Config.currentConfig!.apiDomain
     }
+
+    var useSessionToken: Bool {
+        true
+    }
 }
 
 // MARK: - Interface

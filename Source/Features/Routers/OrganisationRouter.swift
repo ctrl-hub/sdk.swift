@@ -34,6 +34,10 @@ enum OrganisationRouter: Route {
     var domain: String {
         Config.currentConfig!.apiDomain
     }
+
+    var useSessionToken: Bool {
+        true
+    }
 }
 
 // MARK: - Interface

@@ -13,6 +13,7 @@ protocol Route {
     var path: String { get }
     var method: String { get }
     var domain: String { get }
+    var useSessionToken: Bool { get }
 }
 
 @available(iOS 16.0, *)
@@ -27,7 +28,9 @@ extension Route {
         let base = URL(string: domain)!
         var request = URLRequest(url: base.appendingPathComponent(path).appending(queryItems: queryItems))
         request.httpMethod = method
-        request.setValue(accessToken, forHTTPHeaderField: "X-Session-Token")
+        if useSessionToken {
+            request.setValue(accessToken, forHTTPHeaderField: "X-Session-Token")
+        }
         return request
     }
     
