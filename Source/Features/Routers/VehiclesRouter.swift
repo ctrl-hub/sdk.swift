@@ -38,7 +38,7 @@ public actor Vehicles {
 
     public func Get(orgId: String) async throws -> [Vehicle] {
         let (data, response) = try await VehiclesRouter.All(orgId.lowercased()).Request(parameters: [
-            "include": "model,equipment,manufacturer,specification"
+            "include": "equipment,specification,specification.model,specification.model.manufacturer"
         ])
         return try decoder.decode([Vehicle].self, from: data)
     }

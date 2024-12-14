@@ -21,34 +21,32 @@ public struct Vehicle: Sendable, Equatable, Identifiable {
 
     @ResourceAttribute() public var colour: String?
 
-    @ResourceRelationship() public var model: VechicleModel
-
-    @ResourceRelationship() public var manufacturer: VechicleManufacturer
-
     @ResourceRelationship() public var specification: VehicleSpecification
 
-    @ResourceRelationship() public var equipment: [VechicleEquipmentItem]
+    @ResourceRelationship() public var equipment: [VehicleEquipmentItem]
 }
 
 @ResourceWrapper(type: "equipment-items")
-public struct VechicleEquipmentItem: Sendable, Equatable, Identifiable {
+public struct VehicleEquipmentItem: Sendable, Equatable, Identifiable {
     public var id: String
 
     @ResourceAttribute() public var serial: String
 }
 
 @ResourceWrapper(type: "vehicle-manufacturers")
-public struct VechicleManufacturer: Sendable, Equatable, Identifiable {
+public struct VehicleManufacturer: Sendable, Equatable, Identifiable {
     public var id: String
 
     @ResourceAttribute() public var name: String
 }
 
 @ResourceWrapper(type: "vehicle-models")
-public struct VechicleModel: Sendable, Equatable, Identifiable {
+public struct VehicleModel: Sendable, Equatable, Identifiable {
     public var id: String
-
+    
     @ResourceAttribute() public var name: String
+    
+    @ResourceRelationship() public var manufacturer: VehicleManufacturer
 }
 
 public struct VehicleDocumentation: Codable, Equatable, Sendable {
@@ -75,4 +73,6 @@ public struct VehicleSpecification: Sendable, Equatable, Identifiable {
     @ResourceAttribute() public var engine: String
 
     @ResourceAttribute() public var documentation: [VehicleDocumentation]
+    
+    @ResourceRelationship() public var model: VehicleModel
 }

@@ -16,8 +16,6 @@ public struct EquipmentItem: Sendable, Equatable, Identifiable {
     @ResourceAttribute() public var serial: String
 
     @ResourceRelationship public var model: EquipmentModel
-
-    @ResourceRelationship public var manufacturer: EquipmentManufacturer
 }
 
 @ResourceWrapper(type: "equipment-models")
@@ -33,6 +31,8 @@ public struct EquipmentModel: Sendable, Equatable, Identifiable {
     @ResourceAttribute() public var specification: EquipmentSpecification
     
     @ResourceRelationship public var categories: [EquipmentCategory]
+    
+    @ResourceRelationship public var manufacturer: EquipmentManufacturer
 }
 
 @ResourceWrapper(type: "equipment-categories")
