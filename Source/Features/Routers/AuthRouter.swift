@@ -9,17 +9,17 @@ import Foundation
 
 enum AuthRouter: Route {
     case Initiate
-    case Complete(String)
+    case Complete
     
     var path: String {
         switch self {
         case .Initiate:
             return "self-service/login/api"
-        case .Complete(let id):
-            return "/self-service/login?flow=\(id)"
+        case .Complete:
+            return "self-service/login"
         }
     }
-    
+
     var method: String {
         switch self {
         case .Initiate:
@@ -50,20 +50,27 @@ public actor Auth {
         return try decoder.decode(AuthFlow.self, from: data)
     }
 
-    public func Complete(id: String) async throws -> AuthFlow? {
-        let (data, response) = try await AuthRouter.Initiate.Request()
-        return try decoder.decode(AuthFlow.self, from: data)
+    public func Complete(flow: AuthFlow, email: String, password: String) async throws -> AuthResponse? {
+        let body = LoginPayload(identifier: email, password: password, method: "password")
+        let (data, response) = try await AuthRouter.Complete.Request(parameters: ["flow": flow.id], body: body)
+        return try decoder.decode(AuthResponse.self, from: data)
     }
 }
 
-public struct AuthFlow: Decodable, Identifiable {
+public struct LoginPayload: Encodable {
+    let identifier: String
+    let password: String
+    let method: String
+}
+
+public struct AuthFlow: Sendable, Decodable, Identifiable {
     public let id: String
-    public let ui: AuthFlowUI
 }
 
-public struct AuthFlowUI: Decodable {
-    public let action: String
-    public let method: String
+public struct AuthResponse: Sendable, Decodable {
+    public let sessionToken: String
+    
+    enum CodingKeys: String, CodingKey {
+        case sessionToken = "session_token"
+    }
 }
-
-

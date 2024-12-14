@@ -45,4 +45,16 @@ extension Route {
         return try await URLSession.shared.data(for: request)
     }
 
+    func Request(body: Encodable) async throws -> (Data, URLResponse) {
+        var request = asURLRequest(parameters: [:])
+        request.httpBody = try JSONEncoder().encode(body)
+        return try await URLSession.shared.data(for: request)
+    }
+
+    func Request(parameters: [String: String], body: Encodable) async throws -> (Data, URLResponse) {
+        var request = asURLRequest(parameters: parameters)
+        request.httpBody = try JSONEncoder().encode(body)
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        return try await URLSession.shared.data(for: request)
+    }
 }
