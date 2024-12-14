@@ -25,6 +25,10 @@ enum VehiclesRouter: Route {
             return "GET"
         }
     }
+
+    var domain: String {
+        Config.currentConfig!.apiDomain
+    }
 }
 
 // MARK: - Interface

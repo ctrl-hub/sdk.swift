@@ -30,6 +30,10 @@ enum PermissionRouter: Route {
             return "GET"
         }
     }
+
+    var domain: String {
+        Config.currentConfig!.apiDomain
+    }
 }
 
 // MARK: - Interface

@@ -28,6 +28,10 @@ enum AuthRouter: Route {
             return "POST"
         }
     }
+
+    var domain: String {
+        Config.currentConfig!.authDomain
+    }
 }
 
 @available(iOS 16.0, *)

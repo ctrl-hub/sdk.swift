@@ -12,6 +12,7 @@ import Foundation
 protocol Route {
     var path: String { get }
     var method: String { get }
+    var domain: String { get }
 }
 
 @available(iOS 16.0, *)
@@ -23,7 +24,7 @@ extension Route {
         let queryItems = parameters.map({ (key, value) -> URLQueryItem in
             URLQueryItem(name: key, value: String(value))
         })
-        let base = URL(string: Config.currentConfig!.apiDomain)!
+        let base = URL(string: domain)!
         var request = URLRequest(url: base.appendingPathComponent(path).appending(queryItems: queryItems))
         request.httpMethod = method
         request.setValue(accessToken, forHTTPHeaderField: "X-Session-Token")

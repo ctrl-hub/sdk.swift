@@ -15,7 +15,7 @@ enum IAMRouter: Route {
     var path: String {
         switch self {
         case .WhoAmI:
-            return "/v3/iam/whoami"
+            return "v3/iam/whoami"
         }
     }
 
@@ -24,6 +24,10 @@ enum IAMRouter: Route {
         case .WhoAmI:
             return "GET"
         }
+    }
+
+    var domain: String {
+        Config.currentConfig!.apiDomain
     }
 }
 
