@@ -6,6 +6,7 @@ import PackageDescription
 let package = Package(
     name: "CtrlHub",
     platforms: [
+        .macOS(.v15),
         .iOS(.v13)
     ],
     products: [

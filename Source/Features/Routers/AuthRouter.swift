@@ -38,7 +38,7 @@ enum AuthRouter: Route {
     }
 }
 
-@available(iOS 16.0, *)
+@available(iOS 16.0, macOS 13.0, *)
 public actor Auth {
 
     @MainActor public static let shared = Auth()
