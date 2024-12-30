@@ -49,18 +49,13 @@ public actor EquipmentItems {
     private init() {}
     private let decoder = JSONAPIDecoder()
 
-    public func Get(orgId: String) async throws -> [EquipmentItem] {
-        let (data, response) = try await EquipmentRouter.All(orgId.lowercased()).Request(parameters: [
-            "include": "model,model.manufacturer,model.categories"
-        ])
+    public func Get(orgId: String, parameters: [String: String] = [:]) async throws -> [EquipmentItem] {
+        let (data, response) = try await EquipmentRouter.All(orgId.lowercased()).Request(parameters: parameters)
         return try decoder.decode([EquipmentItem].self, from: data)
     }
 
-    public func Get(orgId: String, equipmentId: String) async throws -> EquipmentItem {
-        debugPrint(1)
-        let (data, response) = try await EquipmentRouter.One(orgId.lowercased(), equipmentId.lowercased()).Request(parameters: [
-            "include": "model,model.manufacturer,model.categories"
-        ])
+    public func Get(orgId: String, equipmentId: String, parameters: [String: String] = [:]) async throws -> EquipmentItem {
+        let (data, response) = try await EquipmentRouter.One(orgId.lowercased(), equipmentId.lowercased()).Request(parameters: parameters)
         return try decoder.decode(EquipmentItem.self, from: data)
     }
 }

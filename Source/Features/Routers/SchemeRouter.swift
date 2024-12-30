@@ -49,13 +49,13 @@ public actor Schemes {
     private init() {}
     private let decoder = JSONAPIDecoder()
 
-    public func Get(orgId: String) async throws -> [Scheme] {
-        let (data, response) = try await SchemeRouter.All(orgId.lowercased()).Request()
+    public func Get(orgId: String, parameters: [String: String] = [:]) async throws -> [Scheme] {
+        let (data, response) = try await SchemeRouter.All(orgId.lowercased()).Request(parameters: parameters)
         return try decoder.decode([Scheme].self, from: data)
     }
 
-    public func Get(orgId: String, schemeId: String) async throws -> Scheme? {
-        let (data, response) = try await SchemeRouter.One(orgId.lowercased(), schemeId.lowercased()).Request()
+    public func Get(orgId: String, schemeId: String, parameters: [String: String] = [:]) async throws -> Scheme? {
+        let (data, response) = try await SchemeRouter.One(orgId.lowercased(), schemeId.lowercased()).Request(parameters: parameters)
         return try decoder.decode(Scheme.self, from: data)
     }
 }

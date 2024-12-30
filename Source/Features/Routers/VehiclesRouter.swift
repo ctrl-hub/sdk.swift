@@ -44,10 +44,8 @@ public actor Vehicles {
     private init() {}
     private let decoder = JSONAPIDecoder()
 
-    public func Get(orgId: String) async throws -> [Vehicle] {
-        let (data, response) = try await VehiclesRouter.All(orgId.lowercased()).Request(parameters: [
-            "include": "equipment,specification,specification.model,specification.model.manufacturer"
-        ])
+    public func Get(orgId: String, parameters: [String: String] = [:]) async throws -> [Vehicle] {
+        let (data, response) = try await VehiclesRouter.All(orgId.lowercased()).Request(parameters: parameters)
         return try decoder.decode([Vehicle].self, from: data)
     }
 }

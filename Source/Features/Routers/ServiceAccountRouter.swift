@@ -59,23 +59,23 @@ public actor ServiceAccounts {
     private init() {}
     private let decoder = JSONAPIDecoder()
 
-    public func Get(orgId: String) async throws -> [ServiceAccount] {
-        let (data, response) = try await ServiceAccountRouter.All(orgId.lowercased()).Request()
+    public func Get(orgId: String, parameters: [String: String] = [:]) async throws -> [ServiceAccount] {
+        let (data, response) = try await ServiceAccountRouter.All(orgId.lowercased()).Request(parameters: parameters)
         return try decoder.decode([ServiceAccount].self, from: data)
     }
 
-    public func Get(orgId: String, serviceAccountId: String) async throws -> ServiceAccount? {
-        let (data, response) = try await ServiceAccountRouter.One(orgId.lowercased(), serviceAccountId.lowercased()).Request()
+    public func Get(orgId: String, serviceAccountId: String, parameters: [String: String] = [:]) async throws -> ServiceAccount? {
+        let (data, response) = try await ServiceAccountRouter.One(orgId.lowercased(), serviceAccountId.lowercased()).Request(parameters: parameters)
         return try decoder.decode(ServiceAccount.self, from: data)
     }
 
-    public func Logs(orgId: String, serviceAccountId: String) async throws -> [ServiceAccountLog]? {
-        let (data, response) = try await ServiceAccountRouter.Logs(orgId.lowercased(), serviceAccountId.lowercased()).Request()
+    public func Logs(orgId: String, serviceAccountId: String, parameters: [String: String] = [:]) async throws -> [ServiceAccountLog]? {
+        let (data, response) = try await ServiceAccountRouter.Logs(orgId.lowercased(), serviceAccountId.lowercased()).Request(parameters: parameters)
         return try decoder.decode([ServiceAccountLog].self, from: data)
     }
 
-    public func Log(orgId: String, serviceAccountId: String, logId: String) async throws -> ServiceAccountLog? {
-        let (data, response) = try await ServiceAccountRouter.Log(orgId.lowercased(), serviceAccountId.lowercased(), logId.lowercased()).Request()
+    public func Log(orgId: String, serviceAccountId: String, logId: String, parameters: [String: String] = [:]) async throws -> ServiceAccountLog? {
+        let (data, response) = try await ServiceAccountRouter.Log(orgId.lowercased(), serviceAccountId.lowercased(), logId.lowercased()).Request(parameters: parameters)
         return try decoder.decode(ServiceAccountLog.self, from: data)
     }
 

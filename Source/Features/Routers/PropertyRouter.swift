@@ -49,13 +49,13 @@ public actor Properties {
     private init() {}
     private let decoder = JSONAPIDecoder()
 
-    public func Get() async throws -> [Property] {
-        let (data, response) = try await PropertyRouter.All.Request()
+    public func Get(parameters: [String: String] = [:]) async throws -> [Property] {
+        let (data, response) = try await PropertyRouter.All.Request(parameters: parameters)
         return try decoder.decode([Property].self, from: data)
     }
     
-    public func Get(id: String) async throws -> Property? {
-        let (data, response) = try await PropertyRouter.One(id.lowercased()).Request()
+    public func Get(id: String, parameters: [String: String] = [:]) async throws -> Property? {
+        let (data, response) = try await PropertyRouter.One(id.lowercased()).Request(parameters: parameters)
         return try decoder.decode(Property.self, from: data)
     }
 }

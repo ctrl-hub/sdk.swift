@@ -49,13 +49,13 @@ public actor Permissions {
     private init() {}
     private let decoder = JSONAPIDecoder()
 
-    public func Get() async throws -> [Permission] {
-        let (data, response) = try await PermissionRouter.All.Request()
+    public func Get(parameters: [String: String] = [:]) async throws -> [Permission] {
+        let (data, response) = try await PermissionRouter.All.Request(parameters: parameters)
         return try decoder.decode([Permission].self, from: data)
     }
     
-    public func Get(id: String) async throws -> Permission? {
-        let (data, response) = try await PermissionRouter.One(id.lowercased()).Request()
+    public func Get(id: String, parameters: [String: String] = [:]) async throws -> Permission? {
+        let (data, response) = try await PermissionRouter.One(id.lowercased()).Request(parameters: parameters)
         return try decoder.decode(Permission.self, from: data)
     }
 }

@@ -49,13 +49,13 @@ public actor Streets {
     private init() {}
     private let decoder = JSONAPIDecoder()
 
-    public func Get() async throws -> [Street] {
-        let (data, response) = try await StreetRouter.All.Request()
+    public func Get(parameters: [String: String] = [:]) async throws -> [Street] {
+        let (data, response) = try await StreetRouter.All.Request(parameters: parameters)
         return try decoder.decode([Street].self, from: data)
     }
     
-    public func Get(streetId: String) async throws -> Street? {
-        let (data, response) = try await StreetRouter.One(streetId.lowercased()).Request()
+    public func Get(streetId: String, parameters: [String: String] = [:]) async throws -> Street? {
+        let (data, response) = try await StreetRouter.One(streetId.lowercased()).Request(parameters: parameters)
         return try decoder.decode(Street.self, from: data)
     }
 }

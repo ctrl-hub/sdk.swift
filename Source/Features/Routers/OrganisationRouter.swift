@@ -49,13 +49,13 @@ public actor Organisations {
     private init() {}
     private let decoder = JSONAPIDecoder()
 
-    public func Get() async throws -> [Organisation] {
-        let (data, response) = try await OrganisationRouter.All.Request()
+    public func Get(parameters: [String: String] = [:]) async throws -> [Organisation] {
+        let (data, response) = try await OrganisationRouter.All.Request(parameters: parameters)
         return try decoder.decode([Organisation].self, from: data)
     }
 
-    public func Get(id: String) async throws -> Organisation? {
-        let (data, response) = try await OrganisationRouter.One(id.lowercased()).Request()
+    public func Get(id: String, parameters: [String: String] = [:]) async throws -> Organisation? {
+        let (data, response) = try await OrganisationRouter.One(id.lowercased()).Request(parameters: parameters)
         return try decoder.decode(Organisation.self, from: data)
     }
 }
