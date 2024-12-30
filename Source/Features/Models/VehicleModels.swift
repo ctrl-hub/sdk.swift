@@ -21,6 +21,8 @@ public struct Vehicle: Sendable, Equatable, Identifiable {
 
     @ResourceAttribute() public var colour: String?
 
+    @ResourceAttribute() public var status: String?
+
     @ResourceRelationship() public var specification: VehicleSpecification
 
     @ResourceRelationship() public var equipment: [VehicleEquipmentItem]
