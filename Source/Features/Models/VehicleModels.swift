@@ -66,13 +66,11 @@ public struct VehicleSpecification: Sendable, Equatable, Identifiable {
 
     @ResourceAttribute() public var emissions: Double
 
-    @ResourceAttribute() public var transmission: String
-
     @ResourceAttribute() public var year: Int
 
-    @ResourceAttribute() public var fuel: String
+    @ResourceAttribute(key: "fuel_type") public var fuel: String
 
-    @ResourceAttribute() public var engine: String
+    @ResourceAttribute(key: "engine_capacity") public var engine: Int
 
     @ResourceAttribute() public var documentation: [VehicleDocumentation]
     

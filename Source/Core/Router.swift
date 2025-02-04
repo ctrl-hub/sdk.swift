@@ -34,7 +34,7 @@ extension Route {
         return request
     }
     
-    /// Request makes the request to the backend0
+    /// Request makes the request to the backend
     func Request() async throws -> (Data, URLResponse) {
         let request = asURLRequest(parameters: [:])
         return try await URLSession.shared.data(for: request)

@@ -25,4 +25,3 @@ public var accessToken: String? {
         keychain.set(newAccessToken ?? "", forKey: "accessToken")
     }
 }
-
