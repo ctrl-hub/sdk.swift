@@ -18,6 +18,43 @@ public struct EquipmentItem: Sendable, Equatable, Identifiable {
     @ResourceRelationship public var model: EquipmentModel
 }
 
+@ResourceWrapper(type: "equipment-exposures")
+public struct EquipmentExposure: Sendable, Equatable, Identifiable {
+    public var id: String
+    
+    @ResourceAttribute(key: "start_time") public var startTime: Date
+    
+    @ResourceAttribute(key: "end_time") public var endTime: Date
+    
+//    @ResourceAttribute() public var ppe: PPE
+}
+
+public struct PPE: Codable, Equatable, Sendable {
+    public var mask: Bool
+
+    public var earDefenders: Bool
+
+    enum CodingKeys: String, CodingKey {
+        case mask
+        case earDefenders = "ear_defenders"
+    }
+}
+
+public struct EquipmentExposureDTO: Sendable {
+    public var startTime: Date
+    public var endTime: Date
+    public var mask: Bool
+    public var earDefenders: Bool
+    
+    init(startTime: Date, endTime: Date, mask: Bool, earDefenders: Bool) {
+        self.startTime = startTime
+        self.endTime = endTime
+        self.mask = mask
+        self.earDefenders = earDefenders
+    }
+}
+
+
 @ResourceWrapper(type: "equipment-models")
 public struct EquipmentModel: Sendable, Equatable, Identifiable {
     public var id: String
