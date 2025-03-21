@@ -5,6 +5,7 @@
 // Copyright 2024-Present Ctrl Hub Limited.
 
 import Foundation
+import JSONAPI
 
 /**
  Router is a protocol for routing calls to the correct path, usign the right method, on the API
@@ -36,18 +37,19 @@ extension Route {
     
     /// Request makes the request to the backend
     func Request() async throws -> (Data, URLResponse) {
-        let request = asURLRequest(parameters: [:])
+        var request = asURLRequest(parameters: [:])
         return try await URLSession.shared.data(for: request)
     }
 
     func Request(parameters: [String: String]) async throws -> (Data, URLResponse) {
-        let request = asURLRequest(parameters: parameters)
+        var request = asURLRequest(parameters: parameters)
         return try await URLSession.shared.data(for: request)
     }
 
-    func Request(body: Encodable) async throws -> (Data, URLResponse) {
+    func Request(body: Data) async throws -> (Data, URLResponse) {
         var request = asURLRequest(parameters: [:])
-        request.httpBody = try JSONEncoder().encode(body)
+        request.httpBody = body
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         return try await URLSession.shared.data(for: request)
     }
 
