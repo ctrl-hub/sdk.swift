@@ -51,7 +51,8 @@ public actor Auth {
     }
 
     public func Complete(flow: AuthFlow, email: String, password: String) async throws -> AuthResponse? {
-        let body = LoginPayload(identifier: email, password: password, method: "password")
+        let payload = LoginPayload(identifier: email, password: password, method: "password")
+        let body = try JSONEncoder().encode(payload)
         let (data, response) = try await AuthRouter.Complete.Request(parameters: ["flow": flow.id], body: body)
         return try decoder.decode(AuthResponse.self, from: data)
     }

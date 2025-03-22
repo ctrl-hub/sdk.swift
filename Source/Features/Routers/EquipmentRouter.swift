@@ -52,6 +52,7 @@ public actor EquipmentItems {
     
     @MainActor public static let shared = EquipmentItems()
     private init() {}
+    private let encoder = JSONAPIEncoder()
     private let decoder = JSONAPIDecoder()
     
     public func Get(orgId: String, parameters: [String: String] = [:]) async throws -> [EquipmentItem] {
@@ -65,7 +66,8 @@ public actor EquipmentItems {
     }
     
     public func CreateExposure(orgId: String, equipmentId: String, exposure: EquipmentExposure, parameters: [String: String] = [:]) async throws -> EquipmentExposure {
-        let (data, response) = try await EquipmentRouter.CreateExposure(orgId.lowercased(), equipmentId.lowercased()).Request(parameters: parameters, body: exposure)
+        let body = try encoder.encode(exposure)
+        let (data, response) = try await EquipmentRouter.CreateExposure(orgId.lowercased(), equipmentId.lowercased()).Request(parameters: parameters, body: body)
         return try decoder.decode(EquipmentExposure.self, from: data)
     }
 }
