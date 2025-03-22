@@ -29,6 +29,10 @@ enum AuthRouter: Route {
         }
     }
 
+    var contentType: String {
+        return "application/json"
+    }
+    
     var domain: String {
         Config.currentConfig!.authDomain
     }

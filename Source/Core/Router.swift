@@ -13,6 +13,7 @@ import JSONAPI
 protocol Route {
     var path: String { get }
     var method: String { get }
+    var contentType: String { get }
     var domain: String { get }
     var useSessionToken: Bool { get }
 }
@@ -29,6 +30,7 @@ extension Route {
         let base = URL(string: domain)!
         var request = URLRequest(url: base.appendingPathComponent(path).appending(queryItems: queryItems))
         request.httpMethod = method
+        request.setValue(contentType, forHTTPHeaderField: "Content-Type")
         if useSessionToken {
             request.setValue(accessToken, forHTTPHeaderField: "X-Session-Token")
         }
@@ -49,14 +51,12 @@ extension Route {
     func Request(body: Data) async throws -> (Data, URLResponse) {
         var request = asURLRequest(parameters: [:])
         request.httpBody = body
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         return try await URLSession.shared.data(for: request)
     }
 
     func Request(parameters: [String: String], body: Data) async throws -> (Data, URLResponse) {
         var request = asURLRequest(parameters: parameters)
         request.httpBody = body
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         return try await URLSession.shared.data(for: request)
     }
 }
