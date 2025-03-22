@@ -13,10 +13,15 @@ import JSONAPI
 public struct VehicleInspection: Sendable, Equatable, Identifiable {
     public var id: String
 
-    @ResourceAttribute(key: "inspected_at") public var inspectedAt: Date
+    @ResourceAttribute(key: "inspected_at") public var inspectedAt: String
 
     @ResourceAttribute() public var checks: VehicleInspectionChecks
-
+    
+    public init(id: String, inspectedAt: String, checks: VehicleInspectionChecks) {
+        self.id = id
+        self.inspectedAt = inspectedAt
+        self.checks = checks
+    }
 }
 
 public struct VehicleInspectionChecks: Codable, Equatable, Sendable {

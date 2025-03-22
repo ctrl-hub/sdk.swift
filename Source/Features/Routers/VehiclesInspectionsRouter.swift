@@ -50,12 +50,18 @@ public actor VehicleInspections {
     private let encoder = JSONAPIEncoder()
     private let decoder = JSONAPIDecoder()
 
-    public func Create(orgId: String, vehicleId: String, inspection: VehicleInspection.Body) async throws -> VehicleInspection {
-        let body = try encoder.encode(inspection)
+    public func Create(orgId: String, vehicleId: String, inspection: VehicleInspection) async throws -> VehicleInspection {
+        let body = try encoder.encode(VehicleInspection.createBody(
+            id: inspection.id,
+            inspectedAt: inspection.inspectedAt,
+            checks: inspection.checks
+        ))
+
         let (data, response) = try await VehiclesInspectionsRouter.Create(
             orgId.lowercased(),
             vehicleId.lowercased()
         ).Request(body: body)
+
         return try decoder.decode(VehicleInspection.self, from: data)
     }
 }
