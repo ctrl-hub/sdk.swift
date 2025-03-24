@@ -54,7 +54,8 @@ public actor VehicleInspections {
         let body = try encoder.encode(VehicleInspection.createBody(
             id: inspection.id,
             inspectedAt: inspection.inspectedAt,
-            checks: inspection.checks
+            checks: inspection.checks,
+            comments: inspection.comments
         ))
 
         let (data, response) = try await VehiclesInspectionsRouter.Create(
