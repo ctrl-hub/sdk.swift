@@ -16,11 +16,13 @@ public struct VehicleInspection: Sendable, Equatable, Identifiable {
     @ResourceAttribute(key: "inspected_at") public var inspectedAt: String
 
     @ResourceAttribute() public var checks: VehicleInspectionChecks
-    
-    public init(id: String, inspectedAt: String, checks: VehicleInspectionChecks) {
+    @ResourceAttribute() public var comments: VehicleInspectionComments
+
+    public init(id: String, inspectedAt: String, checks: VehicleInspectionChecks, comments: VehicleInspectionComments) {
         self.id = id
         self.inspectedAt = inspectedAt
         self.checks = checks
+        self.comments = comments
     }
 }
 
@@ -66,6 +68,93 @@ public struct VehicleInspectionChecks: Codable, Equatable, Sendable {
         warningLights: Bool?,
         washers: Bool?,
         windscreen: Bool?
+    ) {
+        self.access = access
+        self.alarm = alarm
+        self.beacons = beacons
+        self.dailyChecks = dailyChecks
+        self.damage = damage
+        self.levels = levels
+        self.lights = lights
+        self.liquids = liquids
+        self.rearPlate = rearPlate
+        self.security = security
+        self.serviced = serviced
+        self.sparePlate = sparePlate
+        self.storage = storage
+        self.tidiness = tidiness
+        self.towing = towing
+        self.tyres = tyres
+        self.warningLights = warningLights
+        self.washers = washers
+        self.windscreen = windscreen
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case access = "safe_access"
+        case alarm = "reversing_alarm"
+        case beacons = "beacons"
+        case dailyChecks = "driver_checks"
+        case damage = "visible_damage"
+        case levels = "levels"
+        case lights = "lights_and_indicators"
+        case liquids = "chemicals_and_fuel"
+        case rearPlate = "number_plate"
+        case security = "security"
+        case serviced = "servicing"
+        case sparePlate = "spare_number_plate"
+        case storage = "storage"
+        case tidiness = "cleanliness"
+        case towing = "accessories"
+        case tyres = "tyres"
+        case warningLights = "engine_warning_lights"
+        case washers = "washers_and_wipers"
+        case windscreen = "windscreen"
+    }
+}
+
+public struct VehicleInspectionComments: Codable, Equatable, Sendable {
+
+    public var access: String?
+    public var alarm: String?
+    public var beacons: String?
+    public var dailyChecks: String?
+    public var damage: String?
+    public var levels: String?
+    public var lights: String?
+    public var liquids: String?
+    public var rearPlate: String?
+    public var security: String?
+    public var serviced: String?
+    public var sparePlate: String?
+    public var storage: String?
+    public var tidiness: String?
+    public var towing: String?
+    public var tyres: String?
+    public var warningLights: String?
+    public var washers: String?
+    public var windscreen: String?
+
+    public init(
+        access: String?,
+        alarm: String?,
+        beacons: String?,
+        dailyChecks: String?,
+        damage: String?,
+        levels: String?,
+        lights: String?,
+        liquids: String?,
+        rearPlate: String?,
+        security: String?,
+        serviced: String?,
+        sparePlate: String?,
+        storage: String?,
+        tidiness: String?,
+        towing: String?,
+        tyres: String?,
+        warningLights: String?,
+        washers: String?,
+        windscreen: String?
     ) {
         self.access = access
         self.alarm = alarm
