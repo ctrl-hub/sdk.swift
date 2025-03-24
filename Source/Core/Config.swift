@@ -32,7 +32,7 @@ public class Config {
     public private(set) var authDomain: String = "https://auth.ctrl-hub.com"
 
     /// The domain to use for API requests
-    public var apiDomain: String = "https://api.ctrl-hub.com"
+    public private(set) var apiDomain: String = "https://api.ctrl-hub.com"
 
     // MARK: - Lifecycle
     
