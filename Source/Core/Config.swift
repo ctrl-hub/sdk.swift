@@ -32,31 +32,51 @@ public class Config {
     public private(set) var authDomain: String = "https://auth.ctrl-hub.com"
 
     /// The domain to use for API requests
-    public private(set) var apiDomain: String = "https://api.ctrl-hub.com"
+    public var apiDomain: String = "https://api.ctrl-hub.com"
 
     // MARK: - Lifecycle
     
-    public convenience init?(logsEnabled: Bool, logLevel: LogLevel = .debug) {
+    public convenience init?(
+        logsEnabled: Bool,
+        logLevel: LogLevel = .debug,
+        apiDomain: String?,
+        authDomain: String?
+    ) {
         guard let path = Bundle.main.path(forResource: "CtrlHubConfig", ofType: "plist"),
               let config = NSDictionary(contentsOfFile: path) else {
             return nil
         }
-        self.init(config: config, logsEnabled: logsEnabled, logLevel: logLevel)
+        self.init(config: config, logsEnabled: logsEnabled, logLevel: logLevel, apiDomain: apiDomain, authDomain: authDomain)
     }
     
-    public init?(config: NSDictionary, logsEnabled: Bool, logLevel: LogLevel = .debug) {
+    public init?(
+        config: NSDictionary,
+        logsEnabled: Bool,
+        logLevel: LogLevel = .debug,
+        apiDomain: String? = nil,
+        authDomain: String? = nil
+    ) {
         self.logsEnabled = logsEnabled
         self.logLevel = logLevel
 
-        self.authDomain = (config["authDomain"] as? String ?? "")
-        self.apiDomain = (config["apiDomain"] as? String ?? "")
-        
-        if !self.authDomain.hasSuffix("/") {
-            self.authDomain.append("/")
+        if apiDomain == nil {
+            self.apiDomain = (config["apiDomain"] as? String ?? "")
+        } else {
+            self.apiDomain = apiDomain!
         }
 
         if !self.apiDomain.hasSuffix("/") {
             self.apiDomain.append("/")
+        }
+
+        if authDomain == nil {
+            self.authDomain = (config["authDomain"] as? String ?? "")
+        } else {
+            self.authDomain = authDomain!
+        }
+        
+        if !self.authDomain.hasSuffix("/") {
+            self.authDomain.append("/")
         }
 
         if !validate() {
