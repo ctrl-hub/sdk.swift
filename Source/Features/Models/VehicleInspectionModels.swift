@@ -15,8 +15,8 @@ public struct VehicleInspection: Sendable, Equatable, Identifiable {
 
     @ResourceAttribute(key: "inspected_at") public var inspectedAt: String
 
-    @ResourceAttribute() public var checks: VehicleInspectionChecks
-    @ResourceAttribute() public var comments: VehicleInspectionComments
+    @ResourceAttribute() public var checks: VehicleInspectionChecks?
+    @ResourceAttribute() public var comments: VehicleInspectionComments?
 
     public init(id: String, inspectedAt: String, checks: VehicleInspectionChecks, comments: VehicleInspectionComments) {
         self.id = id

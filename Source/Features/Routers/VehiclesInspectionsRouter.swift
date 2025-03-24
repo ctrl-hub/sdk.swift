@@ -10,10 +10,14 @@ import JSONAPI
 // MARK: - Router
 
 enum VehiclesInspectionsRouter: Route {
+    case All(String, String)
     case Create(String, String)
 
     var path: String {
         switch self {
+        case .All(let orgId, let vehicleId):
+            let url = "v3/orgs/\(orgId)/assets/vehicles/\(vehicleId)/inspections"
+            return url
         case .Create(let orgId, let vehicleId):
             let url = "v3/orgs/\(orgId)/assets/vehicles/\(vehicleId)/inspections"
             return url
@@ -22,6 +26,8 @@ enum VehiclesInspectionsRouter: Route {
     
     var method: String {
         switch self {
+        case .All:
+            return "GET"
         case .Create:
             return "POST"
         }
@@ -50,6 +56,11 @@ public actor VehicleInspections {
     private let encoder = JSONAPIEncoder()
     private let decoder = JSONAPIDecoder()
 
+    public func Get(orgId: String, vehicleId: String, parameters: [String: String] = [:]) async throws -> [VehicleInspection] {
+        let (data, response) = try await VehiclesInspectionsRouter.All(orgId, vehicleId).Request(parameters: parameters)
+        return try decoder.decode([VehicleInspection].self, from: data)
+    }
+    
     public func Create(orgId: String, vehicleId: String, inspection: VehicleInspection) async throws -> VehicleInspection {
         let body = try encoder.encode(VehicleInspection.createBody(
             id: inspection.id,
