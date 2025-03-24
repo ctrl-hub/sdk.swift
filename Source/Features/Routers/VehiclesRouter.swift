@@ -26,6 +26,10 @@ enum VehiclesRouter: Route {
         }
     }
 
+    var contentType: String {
+        return "application/vnd.api+json"
+    }
+
     var domain: String {
         Config.currentConfig!.apiDomain
     }

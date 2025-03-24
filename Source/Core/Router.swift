@@ -5,6 +5,7 @@
 // Copyright 2024-Present Ctrl Hub Limited.
 
 import Foundation
+import JSONAPI
 
 /**
  Router is a protocol for routing calls to the correct path, usign the right method, on the API
@@ -12,6 +13,7 @@ import Foundation
 protocol Route {
     var path: String { get }
     var method: String { get }
+    var contentType: String { get }
     var domain: String { get }
     var useSessionToken: Bool { get }
 }
@@ -28,6 +30,7 @@ extension Route {
         let base = URL(string: domain)!
         var request = URLRequest(url: base.appendingPathComponent(path).appending(queryItems: queryItems))
         request.httpMethod = method
+        request.setValue(contentType, forHTTPHeaderField: "Content-Type")
         if useSessionToken {
             request.setValue(accessToken, forHTTPHeaderField: "X-Session-Token")
         }
@@ -36,25 +39,24 @@ extension Route {
     
     /// Request makes the request to the backend
     func Request() async throws -> (Data, URLResponse) {
-        let request = asURLRequest(parameters: [:])
+        var request = asURLRequest(parameters: [:])
         return try await URLSession.shared.data(for: request)
     }
 
     func Request(parameters: [String: String]) async throws -> (Data, URLResponse) {
-        let request = asURLRequest(parameters: parameters)
-        return try await URLSession.shared.data(for: request)
-    }
-
-    func Request(body: Encodable) async throws -> (Data, URLResponse) {
-        var request = asURLRequest(parameters: [:])
-        request.httpBody = try JSONEncoder().encode(body)
-        return try await URLSession.shared.data(for: request)
-    }
-
-    func Request(parameters: [String: String], body: Encodable) async throws -> (Data, URLResponse) {
         var request = asURLRequest(parameters: parameters)
-        request.httpBody = try JSONEncoder().encode(body)
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        return try await URLSession.shared.data(for: request)
+    }
+
+    func Request(body: Data) async throws -> (Data, URLResponse) {
+        var request = asURLRequest(parameters: [:])
+        request.httpBody = body
+        return try await URLSession.shared.data(for: request)
+    }
+
+    func Request(parameters: [String: String], body: Data) async throws -> (Data, URLResponse) {
+        var request = asURLRequest(parameters: parameters)
+        request.httpBody = body
         return try await URLSession.shared.data(for: request)
     }
 }
