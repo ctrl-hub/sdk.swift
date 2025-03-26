@@ -16,9 +16,9 @@ enum StreetRouter: Route {
     var path: String {
         switch self {
         case .All:
-            return "/v3/governance/streets"
+            return "v3/governance/streets"
         case .One(let streetId):
-            return "/v3/governance/streets/\(streetId)"
+            return "v3/governance/streets/\(streetId)"
         }
     }
     

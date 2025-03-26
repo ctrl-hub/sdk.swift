@@ -16,9 +16,9 @@ enum RoleRouter: Route {
     var path: String {
         switch self {
         case .All:
-            return "/v3/iam/roles"
+            return "v3/iam/roles"
         case .One(let RoleId):
-            return "/v3/iam/roles/\(RoleId)"
+            return "v3/iam/roles/\(RoleId)"
         }
     }
     

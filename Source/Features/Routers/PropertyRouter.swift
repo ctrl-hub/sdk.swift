@@ -16,9 +16,9 @@ enum PropertyRouter: Route {
     var path: String {
         switch self {
         case .All:
-            return "/v3/governance/properties"
+            return "v3/governance/properties"
         case .One(let propertyId):
-            return "/v3/governance/properties/\(propertyId)"
+            return "v3/governance/properties/\(propertyId)"
         }
     }
     

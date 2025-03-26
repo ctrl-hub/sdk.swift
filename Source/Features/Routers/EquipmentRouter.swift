@@ -17,11 +17,11 @@ enum EquipmentRouter: Route {
     var path: String {
         switch self {
         case .All(let orgId):
-            return "/v3/orgs/\(orgId)/assets/equipment"
+            return "v3/orgs/\(orgId)/assets/equipment"
         case .One(let orgId, let equipmentId):
-            return "/v3/orgs/\(orgId)/assets/equipment/\(equipmentId)"
+            return "v3/orgs/\(orgId)/assets/equipment/\(equipmentId)"
         case .CreateExposure(let orgId, let equipmentId):
-            return "/v3/orgs/\(orgId)/assets/equipment/\(equipmentId)/exposures"
+            return "v3/orgs/\(orgId)/assets/equipment/\(equipmentId)/exposures"
         }
     }
 

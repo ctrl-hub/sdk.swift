@@ -15,7 +15,7 @@ enum VehiclesRouter: Route {
     var path: String {
         switch self {
         case .All(let orgId):
-            return "/v3/orgs/\(orgId)/assets/vehicles"
+            return "v3/orgs/\(orgId)/assets/vehicles"
         }
     }
     

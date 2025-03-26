@@ -16,9 +16,9 @@ enum SchemeRouter: Route {
     var path: String {
         switch self {
         case .All(let orgId):
-            return "/v3/orgs/\(orgId)/governance/schemes"
+            return "v3/orgs/\(orgId)/governance/schemes"
         case .One(let orgId, let schemeId):
-            return "/v3/orgs/\(orgId)/governance/schemes/\(schemeId)"
+            return "v3/orgs/\(orgId)/governance/schemes/\(schemeId)"
         }
     }
     

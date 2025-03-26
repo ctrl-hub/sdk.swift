@@ -22,38 +22,35 @@ public struct EquipmentItem: Sendable, Equatable, Identifiable {
 public struct EquipmentExposure: Sendable, Equatable, Identifiable {
     public var id: String
     
-    @ResourceAttribute(key: "start_time") public var startTime: Date
+    @ResourceAttribute(key: "start_time") public var startTime: String
     
-    @ResourceAttribute(key: "end_time") public var endTime: Date
+    @ResourceAttribute(key: "end_time") public var endTime: String
     
-//    @ResourceAttribute() public var ppe: PPE
+    @ResourceAttribute(key: "ppe") public var ppe: PPE
+    
+    public init(id: String, startTime: String, endTime: String, ppe: PPE) {
+        self.id = id
+        self.startTime = startTime
+        self.endTime = endTime
+        self.ppe = ppe
+    }
 }
 
 public struct PPE: Codable, Equatable, Sendable {
-    public var mask: Bool
 
-    public var earDefenders: Bool
-
-    enum CodingKeys: String, CodingKey {
-        case mask
-        case earDefenders = "ear_defenders"
-    }
-}
-
-public struct EquipmentExposureDTO: Sendable {
-    public var startTime: Date
-    public var endTime: Date
     public var mask: Bool
     public var earDefenders: Bool
-    
-    init(startTime: Date, endTime: Date, mask: Bool, earDefenders: Bool) {
-        self.startTime = startTime
-        self.endTime = endTime
+
+    public init(mask: Bool, earDefenders: Bool) {
         self.mask = mask
         self.earDefenders = earDefenders
     }
-}
 
+    enum CodingKeys: String, CodingKey {
+        case mask = "mask"
+        case earDefenders = "ear_defenders"
+    }
+}
 
 @ResourceWrapper(type: "equipment-models")
 public struct EquipmentModel: Sendable, Equatable, Identifiable {

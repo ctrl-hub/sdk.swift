@@ -47,6 +47,7 @@ public actor Auth {
 
     @MainActor public static let shared = Auth()
     private init() {}
+    private let encoder = JSONEncoder()
     private let decoder = JSONDecoder()
 
     public func Initiate() async throws -> AuthFlow? {
@@ -56,7 +57,7 @@ public actor Auth {
 
     public func Complete(flow: AuthFlow, email: String, password: String) async throws -> AuthResponse? {
         let payload = LoginPayload(identifier: email, password: password, method: "password")
-        let body = try JSONEncoder().encode(payload)
+        let body = try encoder.encode(payload)
         let (data, response) = try await AuthRouter.Complete.Request(parameters: ["flow": flow.id], body: body)
         return try decoder.decode(AuthResponse.self, from: data)
     }
