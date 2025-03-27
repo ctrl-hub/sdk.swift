@@ -15,6 +15,11 @@ public struct PointLocation: Codable, Equatable, Sendable {
 
     /// The type of geosptial data, `Point`
     public var type: String
+    
+    public init(coordinates: [Double], type: String) {
+        self.coordinates = coordinates
+        self.type = type
+    }
 }
 
 public struct MultiLineString: Codable, Equatable, Sendable {

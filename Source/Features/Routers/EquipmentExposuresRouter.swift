@@ -54,10 +54,8 @@ public actor EquipmentExposures {
             id: exposure.id,
             startTime: exposure.startTime,
             endTime: exposure.endTime,
-            ppe: PPE(
-                mask: exposure.ppe.mask,
-                earDefenders: exposure.ppe.earDefenders
-            )
+            ppe: exposure.ppe,
+            location: exposure.location
         ))
         
         let (data, response) = try await EquipmentExposuresRouter.Create(
