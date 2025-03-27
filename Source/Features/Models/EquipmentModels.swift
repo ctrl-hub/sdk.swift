@@ -30,7 +30,7 @@ public struct EquipmentExposure: Sendable, Equatable, Identifiable {
 
     @ResourceAttribute(key: "location") public var location: PointLocation?
 
-    public init(id: String, startTime: String, endTime: String, ppe: PPE, location: PointLocation) {
+    public init(id: String, startTime: String, endTime: String, ppe: PPE, location: PointLocation? = nil) {
         self.id = id
         self.startTime = startTime
         self.endTime = endTime
