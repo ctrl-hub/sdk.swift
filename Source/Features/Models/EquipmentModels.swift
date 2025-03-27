@@ -28,7 +28,7 @@ public struct EquipmentExposure: Sendable, Equatable, Identifiable {
     
     @ResourceAttribute(key: "ppe") public var ppe: PPE
 
-    @ResourceAttribute(key: "location") public var location: PointLocation
+    @ResourceAttribute(key: "location") public var location: PointLocation?
 
     public init(id: String, startTime: String, endTime: String, ppe: PPE, location: PointLocation) {
         self.id = id

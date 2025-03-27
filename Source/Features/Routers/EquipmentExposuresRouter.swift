@@ -50,6 +50,7 @@ public actor EquipmentExposures {
     private let decoder = JSONAPIDecoder()
       
     public func Create(orgId: String, equipmentId: String, exposure: EquipmentExposure) async throws -> EquipmentExposure {
+
         let body = try encoder.encode(EquipmentExposure.createBody(
             id: exposure.id,
             startTime: exposure.startTime,
